@@ -66,8 +66,8 @@ public class Board extends JPanel implements Runnable {
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                int xpoints[] = {i * width + initX, ((i * width) + (width / 2)) + initX, ((i * width) + (width / 2)) + initX, (i + 1) * width + initX};
-                int ypoints[] = {((j * height) + (height / 2)) + initY, (j * height + initY), ((j + 1) * height + initY), ((j * height) + (height / 2)) + initY};
+                int xpoints[] = {i * width + initX, ((i * width) + (width / 2)) + initX, (i + 1) * width + initX, ((i * width) + (width / 2)) + initX};
+                int ypoints[] = {((j * height) + (height / 2)) + initY, (j * height + initY), ((j * height) + (height / 2)) + initY, ((j + 1) * height + initY)};
                 p = new Polygon(xpoints, ypoints, npoints);
                 cells[i][j].setPolygon(p);
                 cells[i][j].setDraw(Boolean.FALSE);
