@@ -53,23 +53,22 @@ public class Board extends JPanel implements Runnable {
     }
 
     private void createPolygons() {
-        int npoints = 4;
-        int width = 40;
-        int height = 40;
-        int initX = 20;
-        int initY = 20;
-        Polygon p;
+        int npoints = 4;    //Quantos pontos o poligono tem
+        int width = 40;     //Largura
+        int height = 40;    //Altura
+        int initX = 20;     //Distância da Margem em X
+        int initY = 20;     //Distância da Margem em Y
+        Polygon p;          //Ponteiro de um poligono
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                int xpoints[] = {i * width + initX, ((i + 1) * (width / 2)) + initX, ((i + 1) * (width / 2)) + initX, (i + 1) * width + initX};
-                int ypoints[] = {(j + 1) * (height / 2) + initY, (j * height + initY), ((j + 1) * height + initY), (j + 1) * (height / 2) + initY};
+                int xpoints[] = {i * width + initX, ((i * width) +(width / 2)) + initX, ((i * width) +(width / 2)) + initX, (i + 1) * width + initX};
+                int ypoints[] = {((j * height) +(height / 2)) + initY, (j * height + initY), ((j + 1) * height + initY), ((j * height) +(height / 2)) + initY};
                 p = new Polygon(xpoints, ypoints, npoints);
                 cells[i][j].setPolygon(p);
                 cells[i][j].setDraw(Boolean.TRUE);
             }
         }
-
     }
 
     public void run() {
