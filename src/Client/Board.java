@@ -72,7 +72,7 @@ public class Board extends JPanel implements Runnable {
     }
 
     public void run() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        repaint();
     }
 
     public class MouseEvt extends MouseAdapter {
