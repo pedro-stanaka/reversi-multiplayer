@@ -4,6 +4,7 @@
  */
 package Client;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,26 +24,25 @@ public class Main {
 
                     @Override
                     public void run() {
-                        exibir();
+                        show();
                     }
                 });
-
-
     }
 
-    private static void exibir() {
+    private static void show() {
         JFrame window = new JFrame("Jogo Pebinha");
-        window.setSize(new Dimension(800, 800));
+        window.setSize(new Dimension(800, 600));
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
 
         Main reversiGame = new Main();
-        Main.jpanel.setOpaque(true);
+        reversiGame.jpanel.setOpaque(true);
+        //reversiGame.jpanel.setBackground(Color.blue);
 
-        window.setContentPane(Main.jpanel);
+
+        window.setContentPane(reversiGame.jpanel);
 
         window.setVisible(true);
-
 
     }
 
@@ -53,9 +53,13 @@ public class Main {
         Thread bd = new Thread(board);
         bd.start();
 
+        jpanel.setLayout(null);
         jpanel.add(board);
+        jpanel.setBackground(Color.blue);
+        
+        board.setBounds(0,0,700,500);
+        board.setBackground(Color.blue);
 
-        board.setBounds(0,0,700,600);
 
     }
 }

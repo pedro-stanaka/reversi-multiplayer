@@ -17,13 +17,11 @@ public class Cell {
     private int posX;
     private int posY;
     private Boolean draw;
-    private Boolean exists;
     private Color color;
     private Polygon polygon;
 
     public Cell() {
         this.player = 0;
-        this.exists = false;
         this.draw = false;
     }
 
@@ -43,7 +41,7 @@ public class Cell {
     }
 
     /**
-     * @param player the player to set
+     * @param player The player who owns the piece
      */
     public void setPlayer(int player) {
         this.player = player;
@@ -79,21 +77,7 @@ public class Cell {
     }
 
     /**
-     * @return the exists
-     */
-    public Boolean getExists() {
-        return exists;
-    }
-
-    /**
-     * @param exists the exists to set
-     */
-    public void setExists(Boolean exists) {
-        this.exists = exists;
-    }
-
-    /**
-     * @return the color
+     * @return the color of the cell
      */
     public Color getColor() {
         return color;
