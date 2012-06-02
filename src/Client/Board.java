@@ -10,7 +10,6 @@ import java.awt.Polygon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
-import javax.swing.text.StyledEditorKit.BoldAction;
 
 /**
  *
@@ -23,6 +22,7 @@ public class Board extends JPanel implements Runnable {
     private int curPlayer;
     private int player1pieces;
     private int player2pieces;
+    private static final int NUMCELLS = 8;
 
     public Board() {
         //initComponents();
@@ -30,6 +30,7 @@ public class Board extends JPanel implements Runnable {
         drawBoad();
         MouseEvt mouseEvent = new MouseEvt();
         addMouseListener(mouseEvent);
+        curPlayer = 1; // TESTE
     }
 
     private void drawBoad() {
@@ -39,12 +40,14 @@ public class Board extends JPanel implements Runnable {
     }
 
     private void initCells() {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+        for (int i = 0; i < NUMCELLS; i++) {
+            for (int j = 0; j < NUMCELLS; j++) {
                 this.cells[i][j] = new Cell();
                 this.cells[i][j].setX(i);
                 this.cells[i][j].setY(j);
-                this.cells[i][j].setDraw(Boolean.FALSE);
+                this.cells[i][j].setColor(Color.GRAY);
+                this.cells[i][j].setDraw(Boolean.TRUE);
+
             }
         }
     }
@@ -64,13 +67,13 @@ public class Board extends JPanel implements Runnable {
         int initY = 20;     //Distância da Margem em Y
         Polygon p;          //Ponteiro de um poligono
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+        for (int i = 0; i < NUMCELLS; i++) {
+            for (int j = 0; j < NUMCELLS; j++) {
                 int xpoints[] = {i * width + initX, ((i * width) + (width / 2)) + initX, (i + 1) * width + initX, ((i * width) + (width / 2)) + initX};
                 int ypoints[] = {((j * height) + (height / 2)) + initY, (j * height + initY), ((j * height) + (height / 2)) + initY, ((j + 1) * height + initY)};
                 p = new Polygon(xpoints, ypoints, npoints);
                 cells[i][j].setPolygon(p);
-                cells[i][j].setDraw(Boolean.FALSE);
+                cells[i][j].setDraw(Boolean.TRUE);
             }
         }
     }
@@ -79,8 +82,8 @@ public class Board extends JPanel implements Runnable {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for (int i = 1; i < 8; i++) {
-            for (int j = 1; j < 8; j++) {
+        for (int i = 0; i < NUMCELLS; i++) {
+            for (int j = 0; j < NUMCELLS; j++) {
                 if (cells[i][j].getDraw() == true) {
                     {
                         g.setColor(cells[i][j].getColor());
@@ -99,27 +102,30 @@ public class Board extends JPanel implements Runnable {
      * @param y position Y from the mouse
      */
     private void cellMovement(int x, int y) {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+        for (int i = 0; i < NUMCELLS; i++) {
+            for (int j = 0; j < NUMCELLS; j++) {
                 if(cells[i][j].Contains(x, y) == true){
-                    cells[i][j].setColor(Color.yellow);
-                    System.out.println("Reconheceu clique");
+                    if(curPlayer == 1){
+                        cells[i][j].setColor(Color.yellow);
+                        curPlayer++;
+                    }
+                    else{
+                        cells[i][j].setColor(Color.red);
+                        curPlayer--;
+                    }
                 }
             }
         }
     }
 
     public void run() {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (i % 2 == 0) {
-                    this.cells[i][j].setPlayer(1);
-                } else {
-                    this.cells[i][j].setPlayer(2);
-                }
+
+        for (int i = 0; i < NUMCELLS; i++) {
+            for (int j = 0; j < NUMCELLS; j++) {
                 this.cells[i][j].setDraw(Boolean.TRUE);
             }
         }
+
     }
 
     public class MouseEvt extends MouseAdapter {
@@ -129,6 +135,7 @@ public class Board extends JPanel implements Runnable {
             if (curPlayer == 1) {
                 
             } else {
+
             }
             cellMovement(e.getX(), e.getY());
             repaint();

@@ -19,6 +19,7 @@ public class Cell {
     private Boolean draw;
     private Color color;
     private Polygon polygon;
+    
 
     public Cell() {
         this.player = 0;
