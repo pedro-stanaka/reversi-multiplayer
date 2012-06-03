@@ -2,8 +2,6 @@ package Client;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -22,7 +20,6 @@ public class Main {
     public static void main(String args[]) {
         javax.swing.SwingUtilities.invokeLater(
                 new Runnable() {
-
                     @Override
                     public void run() {
                         show();
@@ -31,16 +28,16 @@ public class Main {
     }
 
     private static void show() {
-        JFrame window = new JFrame("Jogo Pebinha");
-        
+        JFrame window = new JFrame("Black X White");
+
         window.setIconImage(new ImageIcon("rsc/logo.png").getImage());
-        window.setSize(new Dimension(800, 600));
+
+        window.setSize(new Dimension(540, 540));
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
 
         Main reversiGame = new Main();
         reversiGame.jpanel.setOpaque(true);
-        //reversiGame.jpanel.setBackground(Color.blue);
 
 
         window.setContentPane(reversiGame.jpanel);
@@ -58,9 +55,9 @@ public class Main {
 
         jpanel.setLayout(null);
         jpanel.add(board);
-        jpanel.setBackground(Color.blue);
+        jpanel.setBackground(Color.red);
         
-        board.setBounds(0,0,700,500);
+        board.setBounds(0,0,500,500);
         board.setBackground(Color.blue);
 
 

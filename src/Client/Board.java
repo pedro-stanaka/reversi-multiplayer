@@ -8,9 +8,10 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
 /**
- *
+ * 
  * @author Pedro Tanaka
  * @author Carolina Massae Kita
+ *
  */
 public class Board extends JPanel implements Runnable {
 
@@ -24,13 +25,13 @@ public class Board extends JPanel implements Runnable {
     public Board() {
         //initComponents();
         player1pieces = player2pieces = 0;
-        drawBoad();
+        drawBoard();
         MouseEvt mouseEvent = new MouseEvt();
         addMouseListener(mouseEvent);
         curPlayer = 1; // TESTE
     }
 
-    private void drawBoad() {
+    private void drawBoard() {
         initCells();
         placeInitCells();
         createPolygons();
@@ -44,7 +45,6 @@ public class Board extends JPanel implements Runnable {
                 this.cells[i][j].setY(j);
                 this.cells[i][j].setColor(Color.GRAY);
                 this.cells[i][j].setDraw(Boolean.TRUE);
-
             }
         }
     }
@@ -70,7 +70,6 @@ public class Board extends JPanel implements Runnable {
                 int ypoints[] = {((j * height) + (height / 2)) + initY, (j * height + initY), ((j * height) + (height / 2)) + initY, ((j + 1) * height + initY)};
                 p = new Polygon(xpoints, ypoints, npoints);
                 cells[i][j].setPolygon(p);
-                cells[i][j].setDraw(Boolean.TRUE);
             }
         }
     }
@@ -90,7 +89,6 @@ public class Board extends JPanel implements Runnable {
                 }
             }
         }
-        g.setColor(Color.red);
     }
 
     /**
@@ -100,14 +98,19 @@ public class Board extends JPanel implements Runnable {
     private void cellMovement(int x, int y) {
         for (int i = 0; i < NUMCELLS; i++) {
             for (int j = 0; j < NUMCELLS; j++) {
-                if(cells[i][j].Contains(x, y) == true){
-                    if(curPlayer == 1){
-                        cells[i][j].setColor(Color.yellow);
-                        curPlayer++;
+                if (cells[i][j].Contains(x, y) == true) {
+                    if (cells[i][j].getPlayer() == 0) {
+                        if (curPlayer == 1) {
+                            cells[i][j].setPlayer(1);
+                            curPlayer++;
+                        } else {
+                            cells[i][j].setPlayer(2);
+                            curPlayer--;
+                        }
                     }
-                    else{
-                        cells[i][j].setColor(Color.red);
-                        curPlayer--;
+                    else
+                    {
+                        System.out.println("Jogada Não Permitida");
                     }
                 }
             }
@@ -115,7 +118,6 @@ public class Board extends JPanel implements Runnable {
     }
 
     public void run() {
-
         for (int i = 0; i < NUMCELLS; i++) {
             for (int j = 0; j < NUMCELLS; j++) {
                 this.cells[i][j].setDraw(Boolean.TRUE);
@@ -127,11 +129,9 @@ public class Board extends JPanel implements Runnable {
     public class MouseEvt extends MouseAdapter {
 
         @Override
-        public void mouseClicked(MouseEvent e){
+        public void mouseClicked(MouseEvent e) {
             if (curPlayer == 1) {
-                
             } else {
-
             }
             cellMovement(e.getX(), e.getY());
             repaint();
