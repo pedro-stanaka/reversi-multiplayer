@@ -91,7 +91,6 @@ public class Board extends JPanel implements Runnable {
             }
         }
         g.setColor(Color.red);
-        g.drawString("Teste", 10, 10);
     }
 
     /**
