@@ -2,6 +2,9 @@ package Client;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -29,6 +32,8 @@ public class Main {
 
     private static void show() {
         JFrame window = new JFrame("Jogo Pebinha");
+        
+        window.setIconImage(new ImageIcon("rsc/logo.png").getImage());
         window.setSize(new Dimension(800, 600));
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
