@@ -84,13 +84,6 @@ public class Cell {
     }
 
     /**
-     * @param color the color to set
-     */
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    /**
      * @return the polygon
      */
     public Polygon getPolygon() {
