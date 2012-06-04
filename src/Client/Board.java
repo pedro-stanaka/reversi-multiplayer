@@ -91,9 +91,21 @@ public class Board extends JPanel implements Runnable {
         }
     }
 
+    private void countPieces(){
+        this.player1pieces = this.player2pieces = 0;
+        for (int i = 0; i < NUMCELLS; i++) {
+            for (int j = 0; j < NUMCELLS; j++) {
+                if( cells[i][j].getPlayer() == 1)
+                    this.player1pieces++;
+                else
+                    this.player2pieces++;
+            }
+        }
+    }
+
     /**
      * @param x position X from the mouse event
-     * @param y position Y from the mouse
+     * @param y position Y from the mouse event
      */
     private void cellMovement(int x, int y) {
         for (int i = 0; i < NUMCELLS; i++) {
@@ -115,6 +127,7 @@ public class Board extends JPanel implements Runnable {
                 }
             }
         }
+        countPieces();
     }
 
     public void run() {
@@ -123,7 +136,6 @@ public class Board extends JPanel implements Runnable {
                 this.cells[i][j].setDraw(Boolean.TRUE);
             }
         }
-
     }
 
     public class MouseEvt extends MouseAdapter {
@@ -133,6 +145,7 @@ public class Board extends JPanel implements Runnable {
             if (curPlayer == 1) {
             } else {
             }
+            String movements = "Nome:" + e.getX() + ":" + e.getY();
             cellMovement(e.getX(), e.getY());
             repaint();
         }
