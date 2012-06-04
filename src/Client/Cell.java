@@ -23,6 +23,7 @@ public class Cell {
     public Cell() {
         this.player = 0;
         this.draw = false;
+        this.color = Color.GRAY;
     }
 
     public Boolean Contains(int x, int y) {
