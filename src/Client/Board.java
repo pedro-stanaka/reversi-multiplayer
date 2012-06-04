@@ -146,6 +146,51 @@ public class Board extends JPanel implements Runnable {
         }
         countPieces();
     }
+    
+    private boolean verifyMovement(int posX, int posY){
+        boolean valueReturn = false;
+        valueReturn = valueReturn || paintCapturedCells(posX, posY, 0, 1);
+        valueReturn = valueReturn || paintCapturedCells(posX, posY, -1, 1);
+        valueReturn = valueReturn || paintCapturedCells(posX, posY, -1, 0);
+        valueReturn = valueReturn || paintCapturedCells(posX, posY, -1, -1);
+        valueReturn = valueReturn || paintCapturedCells(posX, posY, 0, -1);
+        valueReturn = valueReturn || paintCapturedCells(posX, posY, 1, -1);
+        valueReturn = valueReturn || paintCapturedCells(posX, posY, 1, 0);
+        valueReturn = valueReturn || paintCapturedCells(posX, posY, 1, 1);
+        
+        return valueReturn;
+    }
+    
+    private boolean paintCapturedCells(int positionX, int positionY, int dX, int dY){
+        int posX = positionX + dX;
+        int posY = positionY + dY;
+        boolean valueReturn = false;
+        if(curPlayer != cells[posX][posY].getPlayer()){
+            while(1 == 1){
+                if(dX == 1){
+                    if(posX == NUMCELLS)
+                        break;
+                }
+                else if(dX == -1){
+                    if(posX == 0)
+                        break;
+                }
+                if(dY == 1){
+                    if(posY == NUMCELLS)
+                        break;
+                }
+                else if(dY == -1){
+                    if(posY == 0)
+                        break;
+                }
+                posX += dX;
+                posY += dY;
+                if(curPlayer == cells[posX][posY].getPlayer())
+                    valueReturn = true;
+            }
+        }
+        return valueReturn;
+    }
 
     public void run() {
         for (int i = 0; i < NUMCELLS; i++) {
