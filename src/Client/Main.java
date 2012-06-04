@@ -55,7 +55,7 @@ public class Main {
 
         jpanel.setLayout(null);
         jpanel.add(board);
-        jpanel.setBackground(Color.red);
+        jpanel.setBackground(Color.blue);
         
         board.setBounds(0,0,500,500);
         board.setBackground(Color.blue);
