@@ -5,7 +5,15 @@ import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  * 
@@ -20,7 +28,17 @@ public class Board extends JPanel implements Runnable {
     private int curPlayer;
     private int player1pieces;
     private int player2pieces;
+
     private static final int NUMCELLS = 8;
+
+    private PrintStream output;
+    private BufferedReader input;
+    private Socket client;
+    private String serverIp;
+    private int serverPort;
+    private JLabel connectionStatus;
+    private String playerName;
+    private String opponentName;
 
     public Board() {
         //initComponents();
@@ -43,7 +61,6 @@ public class Board extends JPanel implements Runnable {
                 this.cells[i][j] = new Cell();
                 this.cells[i][j].setX(i);
                 this.cells[i][j].setY(j);
-                this.cells[i][j].setColor(Color.GRAY);
                 this.cells[i][j].setDraw(Boolean.TRUE);
             }
         }
@@ -138,8 +155,30 @@ public class Board extends JPanel implements Runnable {
         }
     }
 
-    public class MouseEvt extends MouseAdapter {
+    private void runClient() {
+        try {
 
+        } catch (EOFException eofExcp) {
+        }
+    }
+
+    private void connectIntoServer() throws IOException{
+
+        client = new Socket(InetAddress.getByName(this.serverIp), this.serverPort);
+        showMessage("Succesfully connected!");
+    }
+    
+    private void showMessage(final String messageToDisplay) {
+        SwingUtilities.invokeLater(
+                new Runnable() {
+                    public void run()//atualiza a displayArea
+                    {
+                        connectionStatus.setText(messageToDisplay);
+                    }
+                });
+    }
+
+    public class MouseEvt extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (curPlayer == 1) {
