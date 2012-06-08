@@ -1,5 +1,6 @@
 package Client;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.event.MouseAdapter;
@@ -131,15 +132,16 @@ public class Board extends JPanel implements Runnable {
             for (int j = 0; j < NUMCELLS; j++) {
                 if (cells[i][j].Contains(x, y) == true) {
                     if (cells[i][j].getPlayer() == 0) {
-                        if (curPlayer == 1) {
-                            verifyMovement(i, j);
-                            cells[i][j].setPlayer(1);
-                            curPlayer++;
-                        } else {
-                            verifyMovement(i, j);
-                            cells[i][j].setPlayer(2);
-                            curPlayer--;
-                        }
+                        if (curPlayer == 1) 
+                            if(verifyMovement(i, j)){
+                                cells[i][j].setPlayer(1);
+                                curPlayer++;
+                            }
+                        else 
+                            if(verifyMovement(i, j)){
+                                cells[i][j].setPlayer(2);
+                                curPlayer--;
+                            }
                     } else {
                         System.out.println("Jogada Não Permitida");
                     }
@@ -177,8 +179,10 @@ public class Board extends JPanel implements Runnable {
         int posY = positionY + dY;
         boolean valueReturn = false;
         boolean keepGoing = true;
-        if (curPlayer != cells[positionX][positionY].getPlayer()) {
+        if (curPlayer != cells[posX][posY].getPlayer() && cells[posX][posY].getPlayer() != 0) {
             while (keepGoing) {
+                if(cells[posX][posY].getPlayer() ==  0)
+                    keepGoing = false;
                 if (dX == 1) {
                     if (posX == NUMCELLS) {
                         keepGoing = false;
@@ -197,11 +201,11 @@ public class Board extends JPanel implements Runnable {
                         keepGoing = false;
                     }
                 }
-
+                //System.out.println("Esta em " + positionY+ ", " + positionX + ", " + posY + ", " + posX );
                 if (keepGoing == true) {
                     posX += dX;
                     posY += dY;
-                    if (curPlayer == cells[positionX][positionY].getPlayer()) {
+                    if (curPlayer == cells[posX][posY].getPlayer()) {
                         valueReturn = true;
                         for (int i = positionX; i < posX; i = i + dX) {
                             for (int j = positionY; j < posY; j = j + dY) {
@@ -209,6 +213,8 @@ public class Board extends JPanel implements Runnable {
                             }
                         }
                     }
+                    posX += dX;
+                    posY += dY;
                 }//Fim if
             }
         }
