@@ -24,7 +24,6 @@ import javax.swing.SwingUtilities;
  * @author Carolina Massae Kita
  *
  */
-
 public class Board extends JPanel implements Runnable {
 
 //Atributes
@@ -76,9 +75,9 @@ public class Board extends JPanel implements Runnable {
     }
 
     private void createPolygons() {
-        int npoints = 4;    //Quantos pontos o poligono tem
-        int width = 60;     //Largura
-        int height = 60;    //Altura
+        int npoints = 4;    // Number of points that the polygon has
+        int width = 60;     // Width of the cell
+        int height = 60;    // Height of the cell
         int initX = 20;     //Distância da Margem em X
         int initY = 20;     //Distância da Margem em Y
         Polygon p;          //Ponteiro de um poligono
@@ -120,6 +119,9 @@ public class Board extends JPanel implements Runnable {
                     this.player2pieces++;
                 }
             }
+        }
+        if (player1pieces + player2pieces == 64) {
+            showWinner();
         }
     }
 
@@ -174,6 +176,12 @@ public class Board extends JPanel implements Runnable {
         return valueReturn;
     }
 
+    private int endGame() {
+        int retValue = 0;
+
+        return retValue;
+    }
+
     private boolean paintCapturedCells(int positionX, int positionY, int dX, int dY) {
         int posX = positionX + dX;
         int posY = positionY + dY;
@@ -222,7 +230,6 @@ public class Board extends JPanel implements Runnable {
     }
 
     public void run() {
-        
     }
 
     @SuppressWarnings("CallToThreadDumpStack")
@@ -287,6 +294,19 @@ public class Board extends JPanel implements Runnable {
                 });
     }
 
+    private void showWinner() {
+        String winner;
+
+        if (player1pieces > player2pieces) {
+            winner = this.playerName;
+        } else {
+            winner = this.opponentName;
+        }
+
+        String msg = new String("The winner of this match was" + winner);
+        connectionStatus.setText(msg);
+    }
+
     @SuppressWarnings("CallToThreadDumpStack")
     private void closeConnection() {
         try {
@@ -311,13 +331,13 @@ public class Board extends JPanel implements Runnable {
         }
     }
 
-    private void sendData(String message){
+    private void sendData(String message) {
         try {
             output.println(message);
             output.flush();
         } catch (BufferOverflowException e) {
             JOptionPane.showMessageDialog(null, "An exception was found while sending data");
-            
+
         }
     }
 }
