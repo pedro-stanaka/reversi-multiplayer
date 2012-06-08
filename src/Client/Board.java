@@ -216,7 +216,7 @@ public class Board extends JPanel implements Runnable {
     }
 
     public void run() {
-        runClient();
+        
     }
 
     @SuppressWarnings("CallToThreadDumpStack")
@@ -299,7 +299,7 @@ public class Board extends JPanel implements Runnable {
             if (curPlayer == 1) {
             } else {
             }
-            sendData(playerName + ":" + e.getX() + ":" + e.getY());
+            //sendData(playerName + ":" + e.getX() + ":" + e.getY()); //NetWork Problem
             cellMovement(e.getX(), e.getY());
             repaint();
         }

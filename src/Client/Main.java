@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -17,6 +18,10 @@ public class Main {
     private static JPanel jpanel;
     private static Board board;
 
+    private static String playerName;
+    private static String serverIp;
+    private static String serverPort;
+
     public static void main(String args[]) {
         javax.swing.SwingUtilities.invokeLater(
                 new Runnable() {
@@ -28,7 +33,7 @@ public class Main {
     }
 
     private static void show() {
-        JFrame window = new JFrame("Black X White");
+        JFrame window = new JFrame("Black X White (Client Side)");
 
         window.setIconImage(new ImageIcon("rsc/logo.png").getImage());
 
@@ -49,6 +54,12 @@ public class Main {
     public Main(){
         jpanel = new JPanel();
         board = new Board();
+
+        /* //Network Issue
+        playerName = JOptionPane.showInputDialog(null, "Please type the player name:");
+        serverIp = JOptionPane.showInputDialog(null, "Please type the server ip:");
+        serverPort = JOptionPane.showInputDialog(null, "Please type the server port:");
+        */
 
         Thread bd = new Thread(board);
         bd.start();
