@@ -216,11 +216,7 @@ public class Board extends JPanel implements Runnable {
     }
 
     public void run() {
-        for (int i = 0; i < NUMCELLS; i++) {
-            for (int j = 0; j < NUMCELLS; j++) {
-                this.cells[i][j].setDraw(Boolean.TRUE);
-            }
-        }
+        runClient();
     }
 
     @SuppressWarnings("CallToThreadDumpStack")
