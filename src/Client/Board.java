@@ -114,7 +114,7 @@ public class Board extends JPanel implements Runnable {
             for (int j = 0; j < NUMCELLS; j++) {
                 if (cells[i][j].getPlayer() == 1) {
                     this.player1pieces++;
-                } else {
+                } else if(cells[i][j].getPlayer() == 2) {
                     this.player2pieces++;
                 }
             }
