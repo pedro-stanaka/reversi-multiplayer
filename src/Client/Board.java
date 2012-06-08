@@ -1,5 +1,6 @@
 package Client;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.event.MouseAdapter;
@@ -12,10 +13,12 @@ import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.BufferOverflowException;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 
 /**
  * 
@@ -47,6 +50,12 @@ public class Board extends JPanel implements Runnable {
         MouseEvt mouseEvent = new MouseEvt();
         addMouseListener(mouseEvent);
         curPlayer = 1; // TESTE
+
+        connectionStatus = new JLabel();
+        connectionStatus.setBounds(0, 0, 100, 50);
+        connectionStatus.setForeground(Color.green);
+        connectionStatus.setBorder(BorderFactory.createBevelBorder(0, Color.lightGray, Color.yellow));
+        add(connectionStatus);
     }
 
     private void drawBoard() {
@@ -77,8 +86,8 @@ public class Board extends JPanel implements Runnable {
         int npoints = 4;    // Number of points that the polygon has
         int width = 60;     // Width of the cell
         int height = 60;    // Height of the cell
-        int initX = 20;     //Distância da Margem em X
-        int initY = 20;     //Distância da Margem em Y
+        int initX = 30;     //Distância da Margem em X
+        int initY = 30;     //Distância da Margem em Y
         Polygon p;          //Ponteiro de um poligono
 
         for (int i = 0; i < NUMCELLS; i++) {
@@ -144,7 +153,7 @@ public class Board extends JPanel implements Runnable {
                                 curPlayer--;
                             }
                     } else {
-                        System.out.println("Jogada Não Permitida");
+                        showMessage("Jogada Não Permitida");
                     }
                 }
             }
@@ -170,7 +179,7 @@ public class Board extends JPanel implements Runnable {
         System.out.println("7 - " + valueReturn);
         valueReturn = valueReturn || paintCapturedCells(posX, posY, 1, 1);
         if (valueReturn == false) {
-            System.out.println("##### JOGADA INVALIDA ####");
+            showMessage("##### JOGADA INVALIDA ####");
         }
         return valueReturn;
     }
@@ -303,7 +312,7 @@ public class Board extends JPanel implements Runnable {
         }
 
         String msg = new String("The winner of this match was" + winner);
-        connectionStatus.setText(msg);
+        showMessage(msg);
     }
 
     @SuppressWarnings("CallToThreadDumpStack")
