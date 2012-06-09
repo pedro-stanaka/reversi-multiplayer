@@ -197,21 +197,21 @@ public class Board extends JPanel implements Runnable {
 
     private boolean verifyMovement(int posX, int posY) {
         boolean valueReturn = false;
-        valueReturn = valueReturn || paintCapturedCellsPlus0Plus1(posX, posY);
+        valueReturn = paintCapturedCellsPlus0Plus1(posX, posY) || valueReturn;
         System.out.println("1 - " + valueReturn);
-        valueReturn = valueReturn || paintCapturedCellsMinus1Plus1(posX, posY);
+        valueReturn = paintCapturedCellsMinus1Plus1(posX, posY) || valueReturn;
         System.out.println("2 - " + valueReturn);
-        valueReturn = valueReturn || paintCapturedCellsMinus1Plus0(posX, posY);
+        valueReturn = paintCapturedCellsMinus1Plus0(posX, posY) || valueReturn;
         System.out.println("3 - " + valueReturn);
-        valueReturn = valueReturn || paintCapturedCellsMinus1Minus1(posX, posY);
+        valueReturn = paintCapturedCellsMinus1Minus1(posX, posY) || valueReturn;
         System.out.println("4 - " + valueReturn);
-        valueReturn = valueReturn || paintCapturedCellsPlus0Minus1(posX, posY);
+        valueReturn = paintCapturedCellsPlus0Minus1(posX, posY) || valueReturn;
         System.out.println("5 - " + valueReturn);
-        valueReturn = valueReturn || paintCapturedCellsPlus1Minus1(posX, posY);
+        valueReturn = paintCapturedCellsPlus1Minus1(posX, posY) || valueReturn;
         System.out.println("6 - " + valueReturn);
-        valueReturn = valueReturn || paintCapturedCellsPlus1Plus0(posX, posY);
+        valueReturn = paintCapturedCellsPlus1Plus0(posX, posY) || valueReturn;
         System.out.println("7 - " + valueReturn);
-        valueReturn = valueReturn || paintCapturedCellsPlus1Plus1(posX, posY);
+        valueReturn = paintCapturedCellsPlus1Plus1(posX, posY) || valueReturn;
         if (valueReturn == false) {
             showMessage("##### JOGADA INVALIDA ####");
         }
