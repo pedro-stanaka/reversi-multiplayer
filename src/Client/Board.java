@@ -43,7 +43,6 @@ public class Board extends JPanel implements Runnable {
     private String opponentName;
 
     public Board() {
-        //initComponents();
         player1pieces = player2pieces = 0;
         drawBoard();
         MouseEvt mouseEvent = new MouseEvt();
@@ -486,4 +485,41 @@ public class Board extends JPanel implements Runnable {
 
         }
     }
+
+    private boolean verifyPlus0Plus1(int positionX, int positionY){
+        int dY = 1;
+        int posY = positionY + dY;
+        boolean valueReturn = false;
+        if (curPlayer != cells[positionX][posY].getPlayer() && cells[positionX][posY].getPlayer() != 0) {
+            while (posY != NUMCELLS && cells[positionX][posY].getPlayer() != 0) {
+                posY += dY;
+                if (curPlayer == cells[positionX][posY].getPlayer()) {
+                    valueReturn = true;
+                }//enf if
+            }
+        }//enf if
+        return valueReturn;
+    }
+
+    private boolean verifyMinus1Plus1(int positionX, int positionY) {
+        int dX = -1;
+        int dY = 1;
+        int posX = positionX + dX;
+        int posY = positionY + dY;
+        boolean valueReturn = false;
+        if (curPlayer != cells[posX][posY].getPlayer() && cells[posX][posY].getPlayer() != 0) {
+            while (valueReturn == false && posX != 0 && posY != NUMCELLS && cells[posX][posY].getPlayer() != 0) {
+                posX += dX;
+                posY += dY;
+                if (curPlayer == cells[posX][posY].getPlayer()) {
+                    valueReturn = true;
+                    for (int i = 0; i <= mod(positionX,posX); i++) {
+                        cells[positionX+dX*i][positionY+dY*i].setPlayer(curPlayer);
+                    }
+                }//enf if
+            }
+        }//enf if
+        return valueReturn;
+    }
 }
+
