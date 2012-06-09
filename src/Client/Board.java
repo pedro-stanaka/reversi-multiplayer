@@ -177,14 +177,10 @@ public class Board extends JPanel implements Runnable {
             for (int j = 0; j < NUMCELLS; j++) {
                 if (cells[i][j].Contains(x, y) == true) {
                     if (cells[i][j].getPlayer() == 0) {
-                        if (curPlayer == 1) {
-                            if (verifyMovement(i, j)) {
+                        if (curPlayer == 1 && verifyMovement(i, j)) {
                                 curPlayer++;
-                            }
-                        } else {
-                            if (verifyMovement(i, j)) {
+                        } else if(curPlayer == 2 && verifyMovement(i, j)) {
                                 curPlayer--;
-                            }
                         }
                     } else {
                         showMessage("Jogada Não Permitida");
@@ -383,7 +379,6 @@ public class Board extends JPanel implements Runnable {
     }
     
     private int mod(int num1, int num2){
-        int dif = num1-num2;
         if(num1 > num2)
             return (num1-num2);
         else
