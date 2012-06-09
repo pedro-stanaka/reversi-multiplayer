@@ -181,7 +181,6 @@ public class Board extends JPanel implements Runnable {
                             if (verifyMovement(i, j)) {
                                 curPlayer++;
                             }
-                        } else if (verifyMovement(i, j)) {
                         } else {
                             if (verifyMovement(i, j)) {
                                 curPlayer--;
