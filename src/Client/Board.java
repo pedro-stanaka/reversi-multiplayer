@@ -144,12 +144,10 @@ public class Board extends JPanel implements Runnable {
                     if (cells[i][j].getPlayer() == 0) {
                         if (curPlayer == 1) 
                             if(verifyMovement(i, j)){
-                                cells[i][j].setPlayer(1);
                                 curPlayer++;
                             }
                         else 
                             if(verifyMovement(i, j)){
-                                cells[i][j].setPlayer(2);
                                 curPlayer--;
                             }
                     } else {
