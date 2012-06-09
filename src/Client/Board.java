@@ -249,10 +249,9 @@ public class Board extends JPanel implements Runnable {
                 posY += dY;
                 if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
+                    cells[positionX][positionY].setPlayer(curPlayer);
                     for (int i = positionX; i > posX; i = i + dX) {
-                        for (int j = positionY; j < posY; j = j + dY) {
-                            cells[i][j].setPlayer(curPlayer);
-                        }
+                        cells[positionX+dX][positionY+dY].setPlayer(curPlayer);
                     }
                 }//enf if
             }
@@ -290,10 +289,9 @@ public class Board extends JPanel implements Runnable {
                 posY += dY;
                 if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
+                    cells[positionX][positionY].setPlayer(curPlayer);
                     for (int i = positionX; i > posX; i = i + dX) {
-                        for (int j = positionY; j > posY; j = j + dY) {
-                            cells[i][j].setPlayer(curPlayer);
-                        }
+                        cells[positionX+dX][positionY+dY].setPlayer(curPlayer);
                     }
                 }//enf if
             }
@@ -331,10 +329,9 @@ public class Board extends JPanel implements Runnable {
                 posY += dY;
                 if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
+                    cells[positionX][positionY].setPlayer(curPlayer);
                     for (int i = positionX; i < posX; i = i + dX) {
-                        for (int j = positionY; j > posY; j = j + dY) {
-                            cells[i][j].setPlayer(curPlayer);
-                        }
+                        cells[positionX+dX][positionY+dY].setPlayer(curPlayer);
                     }
                 }//enf if
             }
@@ -372,10 +369,9 @@ public class Board extends JPanel implements Runnable {
                 posY += dY;
                 if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
+                    cells[positionX][positionY].setPlayer(curPlayer);
                     for (int i = positionX; i < posX; i = i + dX) {
-                        for (int j = positionY; j < posY; j = j + dY) {
-                            cells[i][j].setPlayer(curPlayer);
-                        }
+                        cells[positionX+dX][positionY+dY].setPlayer(curPlayer);
                     }
                 }//enf if
             }
