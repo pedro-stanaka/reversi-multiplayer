@@ -176,9 +176,12 @@ public class Board extends JPanel implements Runnable {
             for (int j = 0; j < NUMCELLS; j++) {
                 if (cells[i][j].Contains(x, y) == true) {
                     if (cells[i][j].getPlayer() == 0) {
-                        if (curPlayer == 1 && verifyMovement(i, j)) {
+                        showMessage("                              ");
+                        if (curPlayer == 1){
+                            if(verifyMovement(i, j))
                                 curPlayer++;
-                        } else if(curPlayer == 2 && verifyMovement(i, j)) {
+                        } else if(curPlayer == 2){
+                            if(verifyMovement(i, j))
                                 curPlayer--;
                         }
                     } else {
@@ -218,7 +221,7 @@ public class Board extends JPanel implements Runnable {
         int posY = positionY + dY;
         boolean valueReturn = false;
         if (curPlayer != cells[positionX][posY].getPlayer() && cells[positionX][posY].getPlayer() != 0) {
-            while (posY != NUMCELLS && cells[positionX][posY].getPlayer() != 0) {
+            while (valueReturn == false && posY != NUMCELLS && cells[positionX][posY].getPlayer() != 0) {
                 posY += dY;
                 if (curPlayer == cells[positionX][posY].getPlayer()) {
                     valueReturn = true;
@@ -257,7 +260,7 @@ public class Board extends JPanel implements Runnable {
         int posX = positionX + dX;
         boolean valueReturn = false;
         if (curPlayer != cells[posX][positionY].getPlayer() && cells[posX][positionY].getPlayer() != 0) {
-            while (posX != NUMCELLS && positionY != NUMCELLS && cells[posX][positionY].getPlayer() != 0) {
+            while (valueReturn == false && posX != NUMCELLS && positionY != NUMCELLS && cells[posX][positionY].getPlayer() != 0) {
                 posX += dX;
                 if (curPlayer == cells[posX][positionY].getPlayer()) {
                     valueReturn = true;
@@ -296,7 +299,7 @@ public class Board extends JPanel implements Runnable {
         int posY = positionY + dY;
         boolean valueReturn = false;
         if (curPlayer != cells[positionX][posY].getPlayer() && cells[positionX][posY].getPlayer() != 0) {
-            while (positionX != NUMCELLS && posY != NUMCELLS && cells[positionX][posY].getPlayer() != 0) {
+            while (valueReturn == false && positionX != NUMCELLS && posY != NUMCELLS && cells[positionX][posY].getPlayer() != 0) {
                 posY += dY;
                 if (curPlayer == cells[positionX][posY].getPlayer()) {
                     valueReturn = true;
@@ -335,7 +338,7 @@ public class Board extends JPanel implements Runnable {
         int posX = positionX + dX;
         boolean valueReturn = false;
         if (curPlayer != cells[posX][positionY].getPlayer() && cells[posX][positionY].getPlayer() != 0) {
-            while (posX != NUMCELLS && positionY != NUMCELLS && cells[posX][positionY].getPlayer() != 0) {
+            while (valueReturn == false && posX != NUMCELLS && positionY != NUMCELLS && cells[posX][positionY].getPlayer() != 0) {
                 posX += dX;
                 if (curPlayer == cells[posX][positionY].getPlayer()) {
                     valueReturn = true;
