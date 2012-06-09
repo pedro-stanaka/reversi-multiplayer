@@ -48,7 +48,7 @@ public class Board extends JPanel implements Runnable {
         drawBoard();
         MouseEvt mouseEvent = new MouseEvt();
         addMouseListener(mouseEvent);
-        curPlayer = 1; // TESTE
+        curPlayer = 2; // TESTE
 
         connectionStatus = new JLabel();
         connectionStatus.setBounds(0, 0, 100, 50);
@@ -193,12 +193,12 @@ public class Board extends JPanel implements Runnable {
                 if (cells[i][j].Contains(x, y) == true) {
                     if (cells[i][j].getPlayer() == 0) {
                         if (curPlayer == 1) {
-                            if (verifyMovement(i, j)) {
+                            if (verifyMovement(i, j)) 
                                 curPlayer++;
-
-                            } else if (verifyMovement(i, j)) {
+                        }
+                        else {
+                            if (verifyMovement(i, j)) 
                                 curPlayer--;
-                            }
                         }
                     } else {
                         showMessage("Jogada Não Permitida");
@@ -211,7 +211,7 @@ public class Board extends JPanel implements Runnable {
 
     private boolean verifyMovement(int posX, int posY) {
         boolean valueReturn = false;
-        valueReturn = valueReturn || paintCapturedCellsPlus0Minus1(posX, posY);
+        valueReturn = valueReturn || paintCapturedCellsPlus0Plus1(posX, posY);
         System.out.println("1 - " + valueReturn);
         valueReturn = valueReturn || paintCapturedCellsMinus1Plus1(posX, posY);
         System.out.println("2 - " + valueReturn);
@@ -248,6 +248,9 @@ public class Board extends JPanel implements Runnable {
         }//enf if      
         
         return valueReturn;
+        
+        
+        /*return true;*/
     }
     
      private boolean paintCapturedCellsMinus1Plus1(int positionX, int positionY){
