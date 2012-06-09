@@ -163,21 +163,21 @@ public class Board extends JPanel implements Runnable {
 
     private boolean verifyMovement(int posX, int posY) {
         boolean valueReturn = false;
-        valueReturn = valueReturn || paintCapturedCells(posX, posY, 0, 1);
+        valueReturn = valueReturn || paintCapturedCellsPlus0Minus1(posX, posY);
         System.out.println("1 - " + valueReturn);
-        valueReturn = valueReturn || paintCapturedCells(posX, posY, -1, 1);
+        valueReturn = valueReturn || paintCapturedCellsMinus1Plus1(posX, posY);
         System.out.println("2 - " + valueReturn);
-        valueReturn = valueReturn || paintCapturedCells(posX, posY, -1, 0);
+        valueReturn = valueReturn || paintCapturedCellsMinus1Plus0(posX, posY);
         System.out.println("3 - " + valueReturn);
-        valueReturn = valueReturn || paintCapturedCells(posX, posY, -1, -1);
+        valueReturn = valueReturn || paintCapturedCellsMinus1Minus1(posX, posY);
         System.out.println("4 - " + valueReturn);
-        valueReturn = valueReturn || paintCapturedCells(posX, posY, 0, -1);
+        valueReturn = valueReturn || paintCapturedCellsPlus0Minus1(posX, posY);
         System.out.println("5 - " + valueReturn);
-        valueReturn = valueReturn || paintCapturedCells(posX, posY, 1, -1);
+        valueReturn = valueReturn || paintCapturedCellsPlus1Minus1(posX, posY);
         System.out.println("6 - " + valueReturn);
-        valueReturn = valueReturn || paintCapturedCells(posX, posY, 1, 0);
+        valueReturn = valueReturn || paintCapturedCellsPlus1Plus0(posX, posY);
         System.out.println("7 - " + valueReturn);
-        valueReturn = valueReturn || paintCapturedCells(posX, posY, 1, 1);
+        valueReturn = valueReturn || paintCapturedCellsPlus1Plus1(posX, posY);
         if (valueReturn == false) {
             showMessage("##### JOGADA INVALIDA ####");
         }
@@ -189,51 +189,171 @@ public class Board extends JPanel implements Runnable {
 
         return retValue;
     }
-
-    private boolean paintCapturedCells(int positionX, int positionY, int dX, int dY) {
+    
+    
+    private boolean paintCapturedCellsPlus0Plus1(int positionX, int positionY){
+        int dY = 1;
+        int posY = positionY + dY;
+        boolean valueReturn = false;
+        if (curPlayer != cells[positionX][posY].getPlayer() && cells[positionX][posY].getPlayer() != 0) {
+            while(posY != NUMCELLS && cells[positionX][posY].getPlayer() !=  0){
+                posY += dY;
+                if (curPlayer == cells[positionX][posY].getPlayer()) {
+                    valueReturn = true;
+                    for (int j = positionY; j < posY; j = j+dY) 
+                        cells[positionX][j].setPlayer(curPlayer);
+                }//enf if
+            }
+        }//enf if      
+        
+        return valueReturn;
+    }
+    
+    private boolean paintCapturedCellsMinus1Plus1(int positionX, int positionY){
+        int dX = -1;
+        int dY = 1;
         int posX = positionX + dX;
         int posY = positionY + dY;
         boolean valueReturn = false;
-        boolean keepGoing = true;
         if (curPlayer != cells[posX][posY].getPlayer() && cells[posX][posY].getPlayer() != 0) {
-            while (keepGoing) {
-                if(cells[posX][posY].getPlayer() ==  0)
-                    keepGoing = false;
-                if (dX == 1) {
-                    if (posX == NUMCELLS) {
-                        keepGoing = false;
-                    }
-                } else if (dX == -1) {
-                    if (posX == 0) {
-                        keepGoing = false;
-                    }
-                }
-                if (dY == 1) {
-                    if (posY == NUMCELLS) {
-                        keepGoing = false;
-                    }
-                } else if (dY == -1) {
-                    if (posY == 0) {
-                        keepGoing = false;
-                    }
-                }
-                //System.out.println("Esta em " + positionY+ ", " + positionX + ", " + posY + ", " + posX );
-                if (keepGoing == true) {
-                    posX += dX;
-                    posY += dY;
-                    if (curPlayer == cells[posX][posY].getPlayer()) {
-                        valueReturn = true;
-                        for (int i = positionX; i < posX; i = i + dX) {
-                            for (int j = positionY; j < posY; j = j + dY) {
-                                cells[i][j].setPlayer(curPlayer);
-                            }
-                        }
-                    }
-                    posX += dX;
-                    posY += dY;
-                }//Fim if
+            while(posX != NUMCELLS && posY != NUMCELLS && cells[posX][posY].getPlayer() !=  0){
+                posX+= dX;
+                posY+= dY;
+                if (curPlayer == cells[posX][posY].getPlayer()) {
+                    valueReturn = true;
+                    for (int i = positionX; i > posX; i = i+dX)
+                        for (int j = positionY; j < posY; j = j+dY) 
+                            cells[i][j].setPlayer(curPlayer);
+                        
+                }//enf if
             }
-        }
+        }//enf if      
+        
+        return valueReturn;
+    }
+    
+    private boolean paintCapturedCellsMinus1Plus0(int positionX, int positionY){
+        int dX = -1;
+        int posX = positionX + dX;
+        boolean valueReturn = false;
+        if (curPlayer != cells[posX][positionY].getPlayer() && cells[posX][positionY].getPlayer() != 0) {
+            while(posX != NUMCELLS && positionY != NUMCELLS && cells[posX][positionY].getPlayer() !=  0){
+                posX+= dX;
+                if (curPlayer == cells[posX][positionY].getPlayer()) {
+                    valueReturn = true;
+                    for (int i = positionX; i > posX; i = i+dX) 
+                        cells[i][positionY].setPlayer(curPlayer);
+                        
+                }//enf if
+            }
+        }//enf if      
+        
+        return valueReturn;
+    }
+    
+    private boolean paintCapturedCellsMinus1Minus1(int positionX, int positionY){
+        int dX = -1;
+        int dY = -1;
+        int posX = positionX + dX;
+        int posY = positionY + dY;
+        boolean valueReturn = false;
+        if (curPlayer != cells[posX][posY].getPlayer() && cells[posX][posY].getPlayer() != 0) {
+            while(posX != NUMCELLS && posY != NUMCELLS && cells[posX][posY].getPlayer() !=  0){
+                posX+= dX;
+                posY+= dY;
+                if (curPlayer == cells[posX][posY].getPlayer()) {
+                    valueReturn = true;
+                    for (int i = positionX; i > posX; i = i+dX)
+                        for (int j = positionY; j > posY; j = j+dY) 
+                            cells[i][j].setPlayer(curPlayer);
+                        
+                }//enf if
+            }
+        }//enf if      
+        
+        return valueReturn;
+    }
+    
+    private boolean paintCapturedCellsPlus0Minus1(int positionX, int positionY){
+        int dY = -1;
+        int posY = positionY + dY;
+        boolean valueReturn = false;
+        if (curPlayer != cells[positionX][posY].getPlayer() && cells[positionX][posY].getPlayer() != 0) {
+            while(positionX != NUMCELLS && posY != NUMCELLS && cells[positionX][posY].getPlayer() !=  0){
+                posY+= dY;
+                if (curPlayer == cells[positionX][posY].getPlayer()) {
+                    valueReturn = true;
+                    for (int j = positionY; j > posY; j = j+dY) 
+                        cells[positionX][j].setPlayer(curPlayer);
+                        
+                }//enf if
+            }
+        }//enf if      
+        
+        return valueReturn;
+    }
+    
+    private boolean paintCapturedCellsPlus1Minus1(int positionX, int positionY){
+        int dX = 1;
+        int dY = -1;
+        int posX = positionX + dX;
+        int posY = positionY + dY;
+        boolean valueReturn = false;
+        if (curPlayer != cells[posX][posY].getPlayer() && cells[posX][posY].getPlayer() != 0) {
+            while(posX != NUMCELLS && posY != NUMCELLS && cells[posX][posY].getPlayer() !=  0){
+                posX+= dX;
+                posY+= dY;
+                if (curPlayer == cells[posX][posY].getPlayer()) {
+                    valueReturn = true;
+                    for (int i = positionX; i < posX; i = i+dX)
+                        for (int j = positionY; j > posY; j = j+dY) 
+                            cells[i][j].setPlayer(curPlayer);
+                }//enf if
+            }
+        }//enf if      
+        
+        return valueReturn;
+    }
+    
+    private boolean paintCapturedCellsPlus1Plus0(int positionX, int positionY){
+        int dX = 1;
+        int posX = positionX + dX;
+        boolean valueReturn = false;
+        if (curPlayer != cells[posX][positionY].getPlayer() && cells[posX][positionY].getPlayer() != 0) {
+            while(posX != NUMCELLS && positionY != NUMCELLS && cells[posX][positionY].getPlayer() !=  0){
+                posX+= dX;
+                if (curPlayer == cells[posX][positionY].getPlayer()) {
+                    valueReturn = true;
+                    for (int i = positionX; i < posX; i = i+dX)
+                        cells[i][positionY].setPlayer(curPlayer);
+                        
+                }//enf if
+            }
+        }//enf if      
+        
+        return valueReturn;
+    }
+    
+    private boolean paintCapturedCellsPlus1Plus1(int positionX, int positionY){
+        int dX = 1;
+        int dY = 1;
+        int posX = positionX + dX;
+        int posY = positionY + dY;
+        boolean valueReturn = false;
+        if (curPlayer != cells[posX][posY].getPlayer() && cells[posX][posY].getPlayer() != 0) {
+            while(posX != NUMCELLS && posY != NUMCELLS && cells[posX][posY].getPlayer() !=  0){
+                posX+= dX;
+                posY+= dY;
+                if (curPlayer == cells[posX][posY].getPlayer()) {
+                    valueReturn = true;
+                    for (int i = positionX; i < posX; i = i+dX)
+                        for (int j = positionY; j < posY; j = j+dY) 
+                            cells[i][j].setPlayer(curPlayer);
+                        
+                }//enf if
+            }
+        }//enf if      
+        
         return valueReturn;
     }
 
