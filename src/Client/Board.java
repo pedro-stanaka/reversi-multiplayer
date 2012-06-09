@@ -243,14 +243,15 @@ public class Board extends JPanel implements Runnable {
         int posY = positionY + dY;
         boolean valueReturn = false;
         if (curPlayer != cells[posX][posY].getPlayer() && cells[posX][posY].getPlayer() != 0) {
-            while (posX != NUMCELLS && posY != NUMCELLS && cells[posX][posY].getPlayer() != 0) {
+            while (valueReturn == false && posX != NUMCELLS && posY != NUMCELLS && cells[posX][posY].getPlayer() != 0) {
                 posX += dX;
                 posY += dY;
                 if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
                     cells[positionX][positionY].setPlayer(curPlayer);
-                    for (int i = positionX; i > posX; i = i + dX) {
-                        cells[positionX+dX][positionY+dY].setPlayer(curPlayer);
+                    System.out.println("Diagonal... "+ positionX + " " + positionY + " - " + posX + " " + posY);
+                    for (int i = 0; i <= mod(positionX,posX); i++) {
+                        cells[positionX+dX*i][positionY+dY*i].setPlayer(curPlayer);
                     }
                 }//enf if
             }
@@ -283,14 +284,15 @@ public class Board extends JPanel implements Runnable {
         int posY = positionY + dY;
         boolean valueReturn = false;
         if (curPlayer != cells[posX][posY].getPlayer() && cells[posX][posY].getPlayer() != 0) {
-            while (posX != NUMCELLS && posY != NUMCELLS && cells[posX][posY].getPlayer() != 0) {
+            while (valueReturn == false && posX != NUMCELLS && posY != NUMCELLS && cells[posX][posY].getPlayer() != 0) {
                 posX += dX;
                 posY += dY;
                 if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
                     cells[positionX][positionY].setPlayer(curPlayer);
-                    for (int i = positionX; i > posX; i = i + dX) {
-                        cells[positionX+dX][positionY+dY].setPlayer(curPlayer);
+                    System.out.println("Diagonal... "+ positionX + " " + positionY + " - " + posX + " " + posY);
+                    for (int i = 0; i <= mod(positionX,posX); i++) {
+                        cells[positionX+dX*i][positionY+dY*i].setPlayer(curPlayer);
                     }
                 }//enf if
             }
@@ -323,14 +325,15 @@ public class Board extends JPanel implements Runnable {
         int posY = positionY + dY;
         boolean valueReturn = false;
         if (curPlayer != cells[posX][posY].getPlayer() && cells[posX][posY].getPlayer() != 0) {
-            while (posX != NUMCELLS && posY != NUMCELLS && cells[posX][posY].getPlayer() != 0) {
+            while (valueReturn == false && posX != NUMCELLS && posY != NUMCELLS && cells[posX][posY].getPlayer() != 0) {
                 posX += dX;
                 posY += dY;
                 if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
                     cells[positionX][positionY].setPlayer(curPlayer);
-                    for (int i = positionX; i < posX; i = i + dX) {
-                        cells[positionX+dX][positionY+dY].setPlayer(curPlayer);
+                    System.out.println("Diagonal... "+ positionX + " " + positionY + " - " + posX + " " + posY);
+                    for (int i = 0; i <= mod(positionX,posX); i++) {
+                        cells[positionX+dX*i][positionY+dY*i].setPlayer(curPlayer);
                     }
                 }//enf if
             }
@@ -363,19 +366,28 @@ public class Board extends JPanel implements Runnable {
         int posY = positionY + dY;
         boolean valueReturn = false;
         if (curPlayer != cells[posX][posY].getPlayer() && cells[posX][posY].getPlayer() != 0) {
-            while (posX != NUMCELLS && posY != NUMCELLS && cells[posX][posY].getPlayer() != 0) {
+            while (valueReturn == false && posX != NUMCELLS && posY != NUMCELLS && cells[posX][posY].getPlayer() != 0) {
                 posX += dX;
                 posY += dY;
                 if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
                     cells[positionX][positionY].setPlayer(curPlayer);
-                    for (int i = positionX; i < posX; i = i + dX) {
-                        cells[positionX+dX][positionY+dY].setPlayer(curPlayer);
+                    System.out.println("Diagonal... "+ positionX + " " + positionY + " - " + posX + " " + posY);
+                    for (int i = 0; i <= mod(positionX,posX); i++) {
+                        cells[positionX+dX*i][positionY+dY*i].setPlayer(curPlayer);
                     }
                 }//enf if
             }
         }//enf if    
         return valueReturn;
+    }
+    
+    private int mod(int num1, int num2){
+        int dif = num1-num2;
+        if(num1 > num2)
+            return (num1-num2);
+        else
+            return (num2 - num1);
     }
 
     public void run() {
