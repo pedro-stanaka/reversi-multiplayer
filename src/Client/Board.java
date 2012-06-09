@@ -220,7 +220,7 @@ public class Board extends JPanel implements Runnable {
         int dY = 1;
         int posY = positionY + dY;
         boolean valueReturn = false;
-        if (curPlayer != cells[positionX][posY].getPlayer() && cells[positionX][posY].getPlayer() != 0) {
+        if (posY != NUMCELLS && curPlayer != cells[positionX][posY].getPlayer()) {
             while (valueReturn == false && posY != NUMCELLS && cells[positionX][posY].getPlayer() != 0) {
                 posY += dY;
                 if (curPlayer == cells[positionX][posY].getPlayer()) {
@@ -240,7 +240,7 @@ public class Board extends JPanel implements Runnable {
         int posX = positionX + dX;
         int posY = positionY + dY;
         boolean valueReturn = false;
-        if (curPlayer != cells[posX][posY].getPlayer() && cells[posX][posY].getPlayer() != 0) {
+        if (posX != 0 && posY != NUMCELLS && curPlayer != cells[posX][posY].getPlayer()) {
             while (valueReturn == false && posX != 0 && posY != NUMCELLS && cells[posX][posY].getPlayer() != 0) {
                 posX += dX;
                 posY += dY;
@@ -259,7 +259,7 @@ public class Board extends JPanel implements Runnable {
         int dX = -1;
         int posX = positionX + dX;
         boolean valueReturn = false;
-        if (curPlayer != cells[posX][positionY].getPlayer() && cells[posX][positionY].getPlayer() != 0) {
+        if (posX != 0 && curPlayer != cells[posX][positionY].getPlayer()) {
             while (valueReturn == false && posX != NUMCELLS && positionY != NUMCELLS && cells[posX][positionY].getPlayer() != 0) {
                 posX += dX;
                 if (curPlayer == cells[posX][positionY].getPlayer()) {
@@ -279,7 +279,7 @@ public class Board extends JPanel implements Runnable {
         int posX = positionX + dX;
         int posY = positionY + dY;
         boolean valueReturn = false;
-        if (curPlayer != cells[posX][posY].getPlayer() && cells[posX][posY].getPlayer() != 0) {
+        if (posX != 0 && posY != 0 && curPlayer != cells[posX][posY].getPlayer()) {
             while (valueReturn == false && posX != 0 && posY != 0 && cells[posX][posY].getPlayer() != 0) {
                 posX += dX;
                 posY += dY;
@@ -298,7 +298,7 @@ public class Board extends JPanel implements Runnable {
         int dY = -1;
         int posY = positionY + dY;
         boolean valueReturn = false;
-        if (curPlayer != cells[positionX][posY].getPlayer() && cells[positionX][posY].getPlayer() != 0) {
+        if (posY != 0 && curPlayer != cells[positionX][posY].getPlayer()) {
             while (valueReturn == false && positionX != NUMCELLS && posY != NUMCELLS && cells[positionX][posY].getPlayer() != 0) {
                 posY += dY;
                 if (curPlayer == cells[positionX][posY].getPlayer()) {
@@ -318,7 +318,7 @@ public class Board extends JPanel implements Runnable {
         int posX = positionX + dX;
         int posY = positionY + dY;
         boolean valueReturn = false;
-        if (curPlayer != cells[posX][posY].getPlayer() && cells[posX][posY].getPlayer() != 0) {
+        if (posX != NUMCELLS && posY != 0 && curPlayer != cells[posX][posY].getPlayer()) {
             while (valueReturn == false && posX != NUMCELLS && posY != 0 && cells[posX][posY].getPlayer() != 0) {
                 posX += dX;
                 posY += dY;
@@ -337,7 +337,7 @@ public class Board extends JPanel implements Runnable {
         int dX = 1;
         int posX = positionX + dX;
         boolean valueReturn = false;
-        if (curPlayer != cells[posX][positionY].getPlayer() && cells[posX][positionY].getPlayer() != 0) {
+        if (posX != NUMCELLS && curPlayer != cells[posX][positionY].getPlayer()) {
             while (valueReturn == false && posX != NUMCELLS && positionY != NUMCELLS && cells[posX][positionY].getPlayer() != 0) {
                 posX += dX;
                 if (curPlayer == cells[posX][positionY].getPlayer()) {
@@ -357,7 +357,7 @@ public class Board extends JPanel implements Runnable {
         int posX = positionX + dX;
         int posY = positionY + dY;
         boolean valueReturn = false;
-        if (curPlayer != cells[posX][posY].getPlayer() && cells[posX][posY].getPlayer() != 0) {
+        if (posX != NUMCELLS && posY != NUMCELLS && curPlayer != cells[posX][posY].getPlayer()) {
             while (valueReturn == false && posX != NUMCELLS && posY != NUMCELLS && cells[posX][posY].getPlayer() != 0) {
                 posX += dX;
                 posY += dY;
