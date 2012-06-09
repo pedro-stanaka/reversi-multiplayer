@@ -234,11 +234,7 @@ public class Board extends JPanel implements Runnable {
                 }//enf if
             }
         }//enf if      
-
         return valueReturn;
-
-
-        /*return true;*/
     }
 
     private boolean paintCapturedCellsMinus1Plus1(int positionX, int positionY) {
@@ -258,11 +254,9 @@ public class Board extends JPanel implements Runnable {
                             cells[i][j].setPlayer(curPlayer);
                         }
                     }
-
                 }//enf if
             }
         }//enf if
-
         return valueReturn;
     }
 
@@ -278,11 +272,9 @@ public class Board extends JPanel implements Runnable {
                     for (int i = positionX; i > posX; i = i + dX) {
                         cells[i][positionY].setPlayer(curPlayer);
                     }
-
                 }//enf if
             }
-        }//enf if      
-
+        }//enf if    
         return valueReturn;
     }
 
@@ -303,11 +295,9 @@ public class Board extends JPanel implements Runnable {
                             cells[i][j].setPlayer(curPlayer);
                         }
                     }
-
                 }//enf if
             }
-        }//enf if      
-
+        }//enf if    
         return valueReturn;
     }
 
@@ -323,11 +313,9 @@ public class Board extends JPanel implements Runnable {
                     for (int j = positionY; j > posY; j = j + dY) {
                         cells[positionX][j].setPlayer(curPlayer);
                     }
-
                 }//enf if
             }
-        }//enf if      
-
+        }//enf if    
         return valueReturn;
     }
 
@@ -350,8 +338,7 @@ public class Board extends JPanel implements Runnable {
                     }
                 }//enf if
             }
-        }//enf if      
-
+        }//enf if    
         return valueReturn;
     }
 
@@ -367,11 +354,9 @@ public class Board extends JPanel implements Runnable {
                     for (int i = positionX; i < posX; i = i + dX) {
                         cells[i][positionY].setPlayer(curPlayer);
                     }
-
                 }//enf if
             }
-        }//enf if      
-
+        }//enf if    
         return valueReturn;
     }
 
@@ -392,11 +377,9 @@ public class Board extends JPanel implements Runnable {
                             cells[i][j].setPlayer(curPlayer);
                         }
                     }
-
                 }//enf if
             }
-        }//enf if      
-
+        }//enf if    
         return valueReturn;
     }
 
@@ -421,7 +404,6 @@ public class Board extends JPanel implements Runnable {
     }
 
     private void connectIntoServer() throws IOException {
-
         client = new Socket(InetAddress.getByName(this.serverIp), this.serverPort);
         showMessage("Succesfully connected!");
     }
@@ -457,7 +439,6 @@ public class Board extends JPanel implements Runnable {
     private void showMessage(final String messageToDisplay) {
         SwingUtilities.invokeLater(
                 new Runnable() {
-
                     public void run()//atualiza a displayArea
                     {
                         connectionStatus.setText(messageToDisplay);
