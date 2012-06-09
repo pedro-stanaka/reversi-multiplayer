@@ -36,7 +36,7 @@ public class Main {
 
         window.setIconImage(new ImageIcon("rsc/logo.png").getImage());
 
-        window.setSize(new Dimension(540, 630));
+        window.setSize(new Dimension(620, 620));
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
 
@@ -66,7 +66,7 @@ public class Main {
         jpanel.add(board);
         jpanel.setBackground(Color.blue);
         
-        board.setBounds(0,60,500,500);
+        board.setBounds(0,60,550,550);
         board.setBackground(Color.blue);
 
 
