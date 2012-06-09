@@ -18,13 +18,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 
 /**
  * 
  * @author Pedro Tanaka
  * @author Carolina Massae Kita
- *
+ * @version 0.2a
  */
 public class Board extends JPanel implements Runnable {
 
@@ -54,7 +53,8 @@ public class Board extends JPanel implements Runnable {
         connectionStatus = new JLabel();
         connectionStatus.setBounds(0, 0, 100, 50);
         connectionStatus.setForeground(Color.green);
-        connectionStatus.setBorder(BorderFactory.createBevelBorder(0, Color.lightGray, Color.yellow));
+        connectionStatus.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createBevelBorder(0), BorderFactory.createEmptyBorder(1, 2, 2, 1)));
         add(connectionStatus);
     }
 
@@ -123,7 +123,7 @@ public class Board extends JPanel implements Runnable {
             for (int j = 0; j < NUMCELLS; j++) {
                 if (cells[i][j].getPlayer() == 1) {
                     this.player1pieces++;
-                } else if(cells[i][j].getPlayer() == 2) {
+                } else if (cells[i][j].getPlayer() == 2) {
                     this.player2pieces++;
                 }
             }
@@ -131,6 +131,56 @@ public class Board extends JPanel implements Runnable {
         if (player1pieces + player2pieces == 64) {
             showWinner();
         }
+    }
+
+    /**
+     * Check if the current player can move or not from a special in the matrix
+     * cells. The position in question is [positionX][positionY]
+     * 
+     * @param positionX the position X in the board
+     * @param positionY the position Y in the board
+     * @param dX the horizontal direction that is suposed to check
+     * @param dY the vertical direction that is suposed to check
+     *
+     * @return false if the curPlayer cant move now, true otherwise.
+     * 
+     */
+    private boolean check(int positionX, int positionY, int dX, int dY) {
+        int posX = positionX + dX;
+        int posY = positionY + dY;
+        boolean valueReturn = false;
+        boolean keepGoing = true;
+        if (curPlayer != cells[posX][posY].getPlayer() && cells[posX][posY].getPlayer() != 0) {
+            while (keepGoing) {
+                if (cells[posX][posY].getPlayer() == 0) {
+                    keepGoing = false;
+                }
+                if (dX == 1) {
+                    if (posX == NUMCELLS) {
+                        keepGoing = false;
+                    }
+                } else if (dX == -1) {
+                    if (posX == 0) {
+                        keepGoing = false;
+                    }
+                }
+                if (dY == 1) {
+                    if (posY == NUMCELLS) {
+                        keepGoing = false;
+                    }
+                } else if (dY == -1) {
+                    if (posY == 0) {
+                        keepGoing = false;
+                    }
+                }
+                //System.out.println("Esta em " + positionY+ ", " + positionX + ", " + posY + ", " + posX );
+                if (keepGoing == true) {
+                    posX += dX;
+                    posY += dY;
+                }//end if
+            }//end while
+        }
+        return valueReturn;
     }
 
     /**
@@ -142,14 +192,14 @@ public class Board extends JPanel implements Runnable {
             for (int j = 0; j < NUMCELLS; j++) {
                 if (cells[i][j].Contains(x, y) == true) {
                     if (cells[i][j].getPlayer() == 0) {
-                        if (curPlayer == 1) 
-                            if(verifyMovement(i, j)){
+                        if (curPlayer == 1) {
+                            if (verifyMovement(i, j)) {
                                 curPlayer++;
-                            }
-                        else 
-                            if(verifyMovement(i, j)){
+
+                            } else if (verifyMovement(i, j)) {
                                 curPlayer--;
                             }
+                        }
                     } else {
                         showMessage("Jogada Não Permitida");
                     }
@@ -181,13 +231,6 @@ public class Board extends JPanel implements Runnable {
         }
         return valueReturn;
     }
-
-    private int endGame() {
-        int retValue = 0;
-
-        return retValue;
-    }
-    
     
     private boolean paintCapturedCellsPlus0Plus1(int positionX, int positionY){
         int dY = 1;
@@ -207,7 +250,7 @@ public class Board extends JPanel implements Runnable {
         return valueReturn;
     }
     
-    private boolean paintCapturedCellsMinus1Plus1(int positionX, int positionY){
+     private boolean paintCapturedCellsMinus1Plus1(int positionX, int positionY){
         int dX = -1;
         int dY = 1;
         int posX = positionX + dX;
@@ -220,13 +263,13 @@ public class Board extends JPanel implements Runnable {
                 if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
                     for (int i = positionX; i > posX; i = i+dX)
-                        for (int j = positionY; j < posY; j = j+dY) 
+                        for (int j = positionY; j < posY; j = j+dY)
                             cells[i][j].setPlayer(curPlayer);
-                        
+
                 }//enf if
             }
-        }//enf if      
-        
+        }//enf if
+
         return valueReturn;
     }
     
