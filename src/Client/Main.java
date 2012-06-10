@@ -36,7 +36,7 @@ public class Main {
 
         window.setIconImage(new ImageIcon("rsc/logo.png").getImage());
 
-        window.setSize(new Dimension(620, 620));
+        window.setSize(new Dimension(560, 650));
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
 
