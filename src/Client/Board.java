@@ -227,19 +227,12 @@ public class Board extends JPanel implements Runnable {
     private boolean verifyMovement(int posX, int posY) {
         boolean valueReturn = false;
         valueReturn = paintCapturedCellsPlus0Plus1(posX, posY) || valueReturn;
-        System.out.println("1 - " + valueReturn);
         valueReturn = paintCapturedCellsMinus1Plus1(posX, posY) || valueReturn;
-        System.out.println("2 - " + valueReturn);
         valueReturn = paintCapturedCellsMinus1Plus0(posX, posY) || valueReturn;
-        System.out.println("3 - " + valueReturn);
         valueReturn = paintCapturedCellsMinus1Minus1(posX, posY) || valueReturn;
-        System.out.println("4 - " + valueReturn);
         valueReturn = paintCapturedCellsPlus0Minus1(posX, posY) || valueReturn;
-        System.out.println("5 - " + valueReturn);
         valueReturn = paintCapturedCellsPlus1Minus1(posX, posY) || valueReturn;
-        System.out.println("6 - " + valueReturn);
         valueReturn = paintCapturedCellsPlus1Plus0(posX, posY) || valueReturn;
-        System.out.println("7 - " + valueReturn);
         valueReturn = paintCapturedCellsPlus1Plus1(posX, posY) || valueReturn;
         if (valueReturn == false) {
             showMessage("##### JOGADA INVALIDA ####");
@@ -581,6 +574,45 @@ public class Board extends JPanel implements Runnable {
         boolean valueReturn = false;
         if (posX >= 0 && posY >= 0 && curPlayer != cells[posX][posY].getPlayer()) {
             while (valueReturn == false && posX > 0 && posY > 0 && cells[posX][posY].getPlayer() != 0) {
+                posX += dX;
+                posY += dY;
+                if (curPlayer == cells[posX][posY].getPlayer()) {
+                    valueReturn = true;
+                    for (int i = 0; i <= mod(positionX, posX); i++) {
+                        cells[positionX + dX * i][positionY + dY * i].setPlayer(curPlayer);
+                    }
+                }//enf if
+            }
+        }//enf if
+        return valueReturn;
+    }
+
+    private boolean verifyHasMovementsPlus0Minus1(int positionX, int positionY) {
+        int dY = -1;
+        int posY = positionY + dY;
+        boolean valueReturn = false;
+        if (posY >= 0 && curPlayer != cells[positionX][posY].getPlayer()) {
+            while (valueReturn == false && posY > 0 && cells[positionX][posY].getPlayer() != 0) {
+                posY += dY;
+                if (curPlayer == cells[positionX][posY].getPlayer()) {
+                    valueReturn = true;
+                    for (int j = positionY; j > posY; j = j + dY) {
+                        cells[positionX][j].setPlayer(curPlayer);
+                    }
+                }//enf if
+            }
+        }//enf if
+        return valueReturn;
+    }
+
+    private boolean verifyHasMovementsPlus1Minus1(int positionX, int positionY) {
+        int dX = 1;
+        int dY = -1;
+        int posX = positionX + dX;
+        int posY = positionY + dY;
+        boolean valueReturn = false;
+        if (posX < NUMCELLS && posY >= 0 && curPlayer != cells[posX][posY].getPlayer()) {
+            while (valueReturn == false && posX < (NUMCELLS - 1) && posY > 0 && cells[posX][posY].getPlayer() != 0) {
                 posX += dX;
                 posY += dY;
                 if (curPlayer == cells[posX][posY].getPlayer()) {
