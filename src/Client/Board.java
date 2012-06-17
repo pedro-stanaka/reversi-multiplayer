@@ -43,7 +43,11 @@ public class Board extends JPanel implements Runnable {
     private String opponentName;
     private JLabel score;
 
-    public Board() {
+    public Board(String serverIp, int serverPort, String playerName) {
+        this.serverIp = serverIp;
+        this.serverPort = serverPort;
+        this.playerName = playerName;
+        
         player1pieces = player2pieces = 0;
         drawBoard();
         MouseEvt mouseEvent = new MouseEvt();

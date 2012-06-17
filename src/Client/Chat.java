@@ -14,6 +14,8 @@ import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.BufferOverflowException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -92,7 +94,7 @@ public class Chat extends JPanel implements Runnable {
 
 
     @SuppressWarnings("CallToThreadDumpStack")
-    private void runClient() throws IOException{
+    private void runClient() {
         try {
             connectServer();
             getIOData();
@@ -186,8 +188,9 @@ public class Chat extends JPanel implements Runnable {
         );
     }
 
+    @Override
     public void run() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        runClient();
     }
 
     /*

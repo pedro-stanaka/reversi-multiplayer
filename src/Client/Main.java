@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -16,10 +17,11 @@ public class Main {
 
     private static JPanel jpanel;
     private static Board board;
+    private static Chat chat;
 
     private static String playerName;
     private static String serverIp;
-    private static String serverPort;
+    private static int serverPort;
 
     public static void main(String args[]) {
         javax.swing.SwingUtilities.invokeLater(
@@ -36,7 +38,7 @@ public class Main {
 
         window.setIconImage(new ImageIcon("rsc/logo.png").getImage());
 
-        window.setSize(new Dimension(560, 650));
+        window.setSize(new Dimension(1200, 650));
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
 
@@ -49,26 +51,33 @@ public class Main {
 
     }
 
+    @SuppressWarnings("CallToThreadStartDuringObjectConstruction")
     public Main(){
         jpanel = new JPanel();
-        board = new Board();
 
-        /* //Network Issue
-        playerName = JOptionPane.showInputDialog(null, "Please type the player name:");
         serverIp = JOptionPane.showInputDialog(null, "Please type the server ip:");
-        serverPort = JOptionPane.showInputDialog(null, "Please type the server port:");
-        */
+        serverPort = Integer.parseInt(JOptionPane.showInputDialog(null, "Please type the server port:"));
+        playerName = JOptionPane.showInputDialog(null, "Please type the player name:");
+
+        board = new Board( serverIp, serverPort, playerName );
 
         Thread bd = new Thread(board);
         bd.start();
 
+        chat = new  Chat(serverIp, ++serverPort, playerName);
+        Thread gc = new Thread(chat);
+        gc.start();
+
         jpanel.setLayout(null);
+
         jpanel.add(board);
+        jpanel.add(chat);
         jpanel.setBackground(Color.blue);
-        
+
         board.setBounds(0,60,550,550);
         board.setBackground(Color.blue);
 
+        chat.setBounds(560, 100, 700, 500);
 
     }
 }
