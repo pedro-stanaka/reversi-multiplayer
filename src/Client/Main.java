@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.plaf.ColorUIResource;
 
 /**
  *
@@ -72,12 +73,13 @@ public class Main {
 
         jpanel.add(board);
         jpanel.add(chat);
-        jpanel.setBackground(Color.blue);
+        jpanel.setBackground(new Color(255, 0, 1));
 
-        board.setBounds(0,60,550,550);
-        board.setBackground(Color.blue);
+        board.setBounds(0,40,550,550);
+        board.setBackground(new Color(255, 0, 1));
 
-        chat.setBounds(560, 100, 700, 500);
+        chat.setBackground(Color.red);
+        chat.setBounds(560, 60, 520, 500);
 
     }
 }

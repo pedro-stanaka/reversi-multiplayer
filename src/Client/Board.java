@@ -18,6 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import sun.java2d.loops.DrawLine;
+import sun.java2d.pipe.ShapeSpanIterator;
 
 /**
  * 
@@ -33,15 +35,16 @@ public class Board extends JPanel implements Runnable {
     private int player1pieces;
     private int player2pieces;
     private static final int NUMCELLS = 8;
+    private String playerName;
+    private String opponentName;
+    private JLabel score;
+//Network Atributes
     private PrintStream output;
     private BufferedReader input;
     private Socket client;
     private String serverIp;
     private int serverPort;
     private JLabel connectionStatus;
-    private String playerName;
-    private String opponentName;
-    private JLabel score;
 
     public Board(String serverIp, int serverPort, String playerName) {
         this.serverIp = serverIp;
@@ -52,7 +55,7 @@ public class Board extends JPanel implements Runnable {
         drawBoard();
         MouseEvt mouseEvent = new MouseEvt();
         addMouseListener(mouseEvent);
-        curPlayer = 1; // TESTE
+        curPlayer = 2;
 
         connectionStatus = new JLabel();
         connectionStatus.setBounds(0, 0, 100, 50);
@@ -101,6 +104,7 @@ public class Board extends JPanel implements Runnable {
         int initY = 50;     //Distância da Margem em Y
         Polygon p;          //Ponteiro de um poligono
 
+        
         for (int i = 0; i < NUMCELLS; i++) {
             for (int j = 0; j < NUMCELLS; j++) {
                 int xpoints[] = {i * width + initX, ((i * width) + (width / 2)) + initX, (i + 1) * width + initX, ((i * width) + (width / 2)) + initX};
@@ -114,6 +118,9 @@ public class Board extends JPanel implements Runnable {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        g.setColor(Color.red);
+        g.drawLine(0, 35, 1200, 35);
 
         for (int i = 0; i < NUMCELLS; i++) {
             for (int j = 0; j < NUMCELLS; j++) {
@@ -190,16 +197,14 @@ public class Board extends JPanel implements Runnable {
                     if (cells[i][j].getPlayer() == 0) {
                         showMessage("                              ");
                         if (curPlayer == 1) {
-                            System.out.println("Player1-if!");
                             if (verifyMovement(i, j)) {
                                 curPlayer++;
-                                showMessage("Vez do jogador 2");
+                                showMessage("It's the "+opponentName+" turn!");
                             }
                         } else if (curPlayer == 2) {
-                            System.out.println("Player2-else if!");
                             if (verifyMovement(i, j)) {
                                 curPlayer--;
-                                showMessage("Vez do jogador 1");
+                                showMessage("<html>It's your turn!<html/>");
                             }
                         }
                     } else {
@@ -409,6 +414,7 @@ public class Board extends JPanel implements Runnable {
     }
 
     public void run() {
+        runClient();
     }
 
     @SuppressWarnings("CallToThreadDumpStack")
@@ -425,7 +431,6 @@ public class Board extends JPanel implements Runnable {
         } finally {
             closeConnection();
         }
-
     }
 
     private void connectIntoServer() throws IOException {
@@ -452,7 +457,6 @@ public class Board extends JPanel implements Runnable {
 
                 if (curPlayer == 2) {
                     cellMovement(x, y);
-                    repaint();
                 }
             } catch (IOException ioE) {
                 goingWell = false;
@@ -481,6 +485,7 @@ public class Board extends JPanel implements Runnable {
             winner = this.opponentName;
         }
 
+        @SuppressWarnings("RedundantStringConstructorCall")
         String msg = new String("The winner of this match was" + winner);
         showMessage(msg);
     }
@@ -501,11 +506,12 @@ public class Board extends JPanel implements Runnable {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (curPlayer == 1) {
+                sendData(playerName + ":" + e.getX() + ":" + e.getY()); //NetWork Problem
+                cellMovement(e.getX(), e.getY());
+                repaint();
             } else {
+                showMessage("It is the other player turn!");
             }
-            //sendData(playerName + ":" + e.getX() + ":" + e.getY()); //NetWork Problem
-            cellMovement(e.getX(), e.getY());
-            repaint();
         }
     }
 
@@ -629,5 +635,7 @@ public class Board extends JPanel implements Runnable {
         }//enf if
         return valueReturn;
     }
+
+
 
 }
