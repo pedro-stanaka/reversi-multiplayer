@@ -13,13 +13,13 @@ import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.BufferOverflowException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import sun.java2d.loops.DrawLine;
-import sun.java2d.pipe.ShapeSpanIterator;
 
 /**
  * 
@@ -90,10 +90,10 @@ public class Board extends JPanel implements Runnable {
     }
 
     private void placeInitCells() {
-        cells[3][3].setPlayer(1);
-        cells[3][4].setPlayer(2);
-        cells[4][3].setPlayer(2);
-        cells[4][4].setPlayer(1);
+        cells[3][3].setPlayer(2);
+        cells[3][4].setPlayer(1);
+        cells[4][3].setPlayer(1);
+        cells[4][4].setPlayer(2);
     }
 
     private void createPolygons() {
@@ -202,13 +202,14 @@ public class Board extends JPanel implements Runnable {
                                 showMessage("It's the "+opponentName+" turn!");
                             }
                         } else if (curPlayer == 2) {
+                            System.out.println("Server Turn!!");
                             if (verifyMovement(i, j)) {
                                 curPlayer--;
                                 showMessage("<html>It's your turn!<html/>");
                             }
                         }
                     } else {
-                        showMessage("  Jogada Não Permitida  ");
+                        showMessage("  Invalid Movement  ");
                     }
                 }
             }
@@ -223,7 +224,7 @@ public class Board extends JPanel implements Runnable {
                 new Runnable() {
 
                     public void run() {
-                        String gameScore = new String();
+                        String gameScore;
                         gameScore = "<html>O jogador 1 tem: " + player1pieces + "peças<br/>";
                         gameScore += "O jogador 2 tem: " + player2pieces + "peças</html>";
                         score.setText(gameScore);
@@ -246,6 +247,8 @@ public class Board extends JPanel implements Runnable {
         if (valueReturn == false) {
             showMessage("##### JOGADA INVALIDA ####");
         }
+        if(curPlayer == 2 && !valueReturn) System.out.println("Server Movement Invalid"); // Debug
+        repaint();
         return valueReturn;
     }
 
@@ -449,14 +452,17 @@ public class Board extends JPanel implements Runnable {
             try {
                 String receivedData;
                 receivedData = (String) input.readLine();
+                System.out.println("Inside refresh:Client"+receivedData);//Debug
                 String[] data = receivedData.split(":");
 
                 this.opponentName = data[0];
                 int x = Integer.parseInt(data[1]);
                 int y = Integer.parseInt(data[2]);
-
+                showMessage(receivedData);
                 if (curPlayer == 2) {
+                    System.out.println("Before Server Play"+x+" "+y+" "+ curPlayer +"\n");
                     cellMovement(x, y);
+                    repaint();
                 }
             } catch (IOException ioE) {
                 goingWell = false;
@@ -506,19 +512,25 @@ public class Board extends JPanel implements Runnable {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (curPlayer == 1) {
-                sendData(playerName + ":" + e.getX() + ":" + e.getY()); //NetWork Problem
-                cellMovement(e.getX(), e.getY());
-                repaint();
+                try {
+                    cellMovement(e.getX(), e.getY());
+                    sendData(playerName + ":" + e.getX() + ":" + e.getY());
+                    repaint();
+                } catch (IOException ex) {
+                    Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } else {
                 showMessage("It is the other player turn!");
             }
         }
     }
 
-    private void sendData(String message) {
+    private void sendData(String message) throws IOException {
         try {
+            output = new PrintStream(client.getOutputStream());
             output.println(message);
             output.flush();
+            System.out.println("Sending data from client...\n"+message+"\n"); //DEBUG
         } catch (BufferOverflowException e) {
             JOptionPane.showMessageDialog(null, "An exception was found while sending data");
 

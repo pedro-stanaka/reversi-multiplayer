@@ -6,7 +6,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.plaf.ColorUIResource;
 
 /**
  *
@@ -43,10 +42,10 @@ public class Main {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
 
-        Main reversiGame = new Main();
-        reversiGame.jpanel.setOpaque(true);
+        Main game = new Main();
+        game.jpanel.setOpaque(true);
 
-        window.setContentPane(reversiGame.jpanel);
+        window.setContentPane(game.jpanel);
 
         window.setVisible(true);
 
