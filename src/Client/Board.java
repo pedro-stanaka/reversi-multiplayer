@@ -229,7 +229,6 @@ public class Board extends JPanel implements Runnable {
     private boolean verifyHasMovements(){
         boolean valueReturn = false;
         int num = 2;
-        showMessage("     aqui      ");
         for (int posX = 0; posX < NUMCELLS; posX++) 
             for(int posY = 0; posY < NUMCELLS; posY++){
                 if(cells[posX][posY].getPlayer() == 0){
@@ -243,7 +242,6 @@ public class Board extends JPanel implements Runnable {
                     valueReturn = paintCapturedCellsPlus1Plus1(posX, posY, num) || valueReturn;
                 }
             }
-         showMessage(valueReturn+"     =]      ");
          return valueReturn;
     }
 
