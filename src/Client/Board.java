@@ -151,40 +151,7 @@ public class Board extends JPanel implements Runnable {
         }
     }
 
-    /**
-     * Check if the current player can move or not from a special  localization
-     * in the matrix of cells. The origin position is [posX][posY].
-     * 
-     * @param posX the position X in the board
-     * @param posY the position Y in the board
-     * @param dX the horizontal direction that is suposed to check
-     * @param dY the vertical direction that is suposed to check
-     *
-     * @return false if the curPlayer can move now, true otherwise.
-     * 
-     */
-    private boolean check(int posX, int posY, int dX, int dY) {
-        boolean returnValue = false;
-        for (int i = 0; i < NUMCELLS; i++) {
-            for (int j = 0; j < NUMCELLS; j++) {
-                returnValue = returnValue || paintCapturedCellsPlus0Plus1(posX, posY);
-                returnValue = returnValue || paintCapturedCellsMinus1Plus1(posX, posY);
-                returnValue = returnValue || paintCapturedCellsMinus1Plus0(posX, posY);
-                returnValue = returnValue || paintCapturedCellsMinus1Minus1(posX, posY);
-                returnValue = returnValue || paintCapturedCellsPlus0Minus1(posX, posY);
-                returnValue = returnValue || paintCapturedCellsPlus1Minus1(posX, posY);
-                returnValue = returnValue || paintCapturedCellsPlus1Plus0(posX, posY);
-                returnValue = returnValue || paintCapturedCellsPlus1Plus1(posX, posY);
-                if (returnValue == true) {
-                    break;
-                }
-            }
-            if (returnValue == true) {
-                break;
-            }
-        }
-        return returnValue;
-    }
+   
 
     /**
      * @param x position X from the mouse event
@@ -198,27 +165,26 @@ public class Board extends JPanel implements Runnable {
                         showMessage("                              ");
                         
                         if (curPlayer == 1) {
-			  if(verifyHasMovements()) {
+			  if(verifyHasMovements()) 
                             if (verifyMovement(i, j)) {
                                 curPlayer++;
                                 showMessage("It's the "+opponentName+" turn!");
                             }
-                          }
                           else {
 			      curPlayer++;
 			      showMessage("You don't have a valid movement! It's "+opponentName+" turn!");
 			  }
+                          
                         } else if (curPlayer == 2) {
-			  if(verifyHasMovements()){
-                            if (verifyMovement(i, j)) {
+                             if(verifyHasMovements())
+                                if (verifyMovement(i, j)) {
+                                    curPlayer--;
+                                    showMessage("<html>It's your turn!<html/>");
+                                }
+                            else{
                                 curPlayer--;
                                 showMessage("<html>It's your turn!<html/>");
                             }
-			  }
-			  else{
-			    curPlayer--;
-			    showMessage("<html>It's your turn!<html/>");
-			  }
 			  
                         }
                     } else {
@@ -246,11 +212,22 @@ public class Board extends JPanel implements Runnable {
 
 
     }
-    
+     /**
+     * Check if the current player can move or not from a special  localization
+     * in the matrix of cells. The origin position is [posX][posY].
+     * 
+     * @param posX the position X in the board
+     * @param posY the position Y in the board
+     * @param dX the horizontal direction that is suposed to check
+     * @param dY the vertical direction that is suposed to check
+     *
+     * @return false if the curPlayer can move now, true otherwise.
+     * 
+     */
     private boolean verifyHasMovements(){
         boolean valueReturn = false;
         int num = 2;
-        
+        showMessage("     aqui      ");
         for (int posX = 0; posX < NUMCELLS; posX++) 
             for(int posY = 0; posY < NUMCELLS; posY++){
                 if(cells[posX][posY].getPlayer() == 0){
@@ -264,6 +241,7 @@ public class Board extends JPanel implements Runnable {
                     valueReturn = paintCapturedCellsPlus1Plus1(posX, posY, num) || valueReturn;
                 }
             }
+         showMessage(valueReturn+"     =]      ");
          return valueReturn;
     }
 
@@ -293,11 +271,12 @@ public class Board extends JPanel implements Runnable {
         if (posY < NUMCELLS && curPlayer != cells[positionX][posY].getPlayer()) {
             while (valueReturn == false && posY < (NUMCELLS - 1) && cells[positionX][posY].getPlayer() != 0) {
                 posY += dY;
-                if (num == 1 && curPlayer == cells[positionX][posY].getPlayer()) {
+                if (curPlayer == cells[positionX][posY].getPlayer()) {
                     valueReturn = true;
-                    for (int j = positionY; j < posY; j = j + dY) {
-                        cells[positionX][j].setPlayer(curPlayer);
-                    }
+                    if(num == 1)
+                        for (int j = positionY; j < posY; j = j + dY) {
+                            cells[positionX][j].setPlayer(curPlayer);
+                        }
                 }//enf if
             }
         }//enf if
@@ -314,11 +293,12 @@ public class Board extends JPanel implements Runnable {
             while (valueReturn == false && posX > 0 && posY < (NUMCELLS - 1) && cells[posX][posY].getPlayer() != 0) {
                 posX += dX;
                 posY += dY;
-                if (num == 1 && curPlayer == cells[posX][posY].getPlayer()) {
+                if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
-                    for (int i = 0; i <= mod(positionX, posX); i++) {
-                        cells[positionX + dX * i][positionY + dY * i].setPlayer(curPlayer);
-                    }
+                    if(num == 1)
+                        for (int i = 0; i <= mod(positionX, posX); i++) {
+                            cells[positionX + dX * i][positionY + dY * i].setPlayer(curPlayer);
+                        }
                 }//enf if
             }
         }//enf if
@@ -332,11 +312,12 @@ public class Board extends JPanel implements Runnable {
         if (posX >= 0 && curPlayer != cells[posX][positionY].getPlayer()) {
             while (valueReturn == false && posX > 0 && cells[posX][positionY].getPlayer() != 0) {
                 posX += dX;
-                if (num == 1 && curPlayer == cells[posX][positionY].getPlayer()) {
+                if (curPlayer == cells[posX][positionY].getPlayer()) {
                     valueReturn = true;
-                    for (int i = positionX; i > posX; i = i + dX) {
-                        cells[i][positionY].setPlayer(curPlayer);
-                    }
+                    if(num == 1)
+                        for (int i = positionX; i > posX; i = i + dX) {
+                            cells[i][positionY].setPlayer(curPlayer);
+                        }
                 }//enf if
             }
         }//enf if
@@ -353,11 +334,12 @@ public class Board extends JPanel implements Runnable {
             while (valueReturn == false && posX > 0 && posY > 0 && cells[posX][posY].getPlayer() != 0) {
                 posX += dX;
                 posY += dY;
-                if (num == 1 && curPlayer == cells[posX][posY].getPlayer()) {
+                if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
-                    for (int i = 0; i <= mod(positionX, posX); i++) {
-                        cells[positionX + dX * i][positionY + dY * i].setPlayer(curPlayer);
-                    }
+                    if(num == 1)
+                        for (int i = 0; i <= mod(positionX, posX); i++) {
+                            cells[positionX + dX * i][positionY + dY * i].setPlayer(curPlayer);
+                        }
                 }//enf if
             }
         }//enf if
@@ -371,11 +353,12 @@ public class Board extends JPanel implements Runnable {
         if (posY >= 0 && curPlayer != cells[positionX][posY].getPlayer()) {
             while (valueReturn == false && posY > 0 && cells[positionX][posY].getPlayer() != 0) {
                 posY += dY;
-                if (num == 1 && curPlayer == cells[positionX][posY].getPlayer()) {
+                if (curPlayer == cells[positionX][posY].getPlayer()) {
                     valueReturn = true;
-                    for (int j = positionY; j > posY; j = j + dY) {
-                        cells[positionX][j].setPlayer(curPlayer);
-                    }
+                    if(num == 1)
+                        for (int j = positionY; j > posY; j = j + dY) {
+                            cells[positionX][j].setPlayer(curPlayer);
+                        }
                 }//enf if
             }
         }//enf if
@@ -392,11 +375,12 @@ public class Board extends JPanel implements Runnable {
             while (valueReturn == false && posX < (NUMCELLS - 1) && posY > 0 && cells[posX][posY].getPlayer() != 0) {
                 posX += dX;
                 posY += dY;
-                if (num == 1 && curPlayer == cells[posX][posY].getPlayer()) {
+                if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
-                    for (int i = 0; i <= mod(positionX, posX); i++) {
-                        cells[positionX + dX * i][positionY + dY * i].setPlayer(curPlayer);
-                    }
+                    if(num == 1)
+                        for (int i = 0; i <= mod(positionX, posX); i++) {
+                            cells[positionX + dX * i][positionY + dY * i].setPlayer(curPlayer);
+                        }
                 }//enf if
             }
         }//enf if
@@ -410,11 +394,12 @@ public class Board extends JPanel implements Runnable {
         if (posX < NUMCELLS && curPlayer != cells[posX][positionY].getPlayer()) {
             while (valueReturn == false && posX < (NUMCELLS - 1) && cells[posX][positionY].getPlayer() != 0) {
                 posX += dX;
-                if (num == 1 && curPlayer == cells[posX][positionY].getPlayer()) {
+                if (curPlayer == cells[posX][positionY].getPlayer()) {
                     valueReturn = true;
-                    for (int i = positionX; i < posX; i = i + dX) {
-                        cells[i][positionY].setPlayer(curPlayer);
-                    }
+                    if(num == 1)
+                        for (int i = positionX; i < posX; i = i + dX) {
+                            cells[i][positionY].setPlayer(curPlayer);
+                        }
                 }//enf if
             }
         }//enf if
@@ -431,11 +416,12 @@ public class Board extends JPanel implements Runnable {
             while (valueReturn == false && posX < (NUMCELLS - 1) && posY < (NUMCELLS - 1) && cells[posX][posY].getPlayer() != 0) {
                 posX += dX;
                 posY += dY;
-                if (num == 1 && curPlayer == cells[posX][posY].getPlayer()) {
+                if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
-                    for (int i = 0; i <= mod(positionX, posX); i++) {
-                        cells[positionX + dX * i][positionY + dY * i].setPlayer(curPlayer);
-                    }
+                    if(num == 1)
+                        for (int i = 0; i <= mod(positionX, posX); i++) {
+                            cells[positionX + dX * i][positionY + dY * i].setPlayer(curPlayer);
+                        }
                 }//enf if
             }
         }//enf if
