@@ -165,22 +165,24 @@ public class Board extends JPanel implements Runnable {
                         showMessage("                              ");
                         
                         if (curPlayer == 1) {
-			  if(verifyHasMovements()) 
+			  if(verifyHasMovements()){
                             if (verifyMovement(i, j)) {
                                 curPlayer++;
                                 showMessage("It's the "+opponentName+" turn!");
                             }
+                          }
                           else {
 			      curPlayer++;
 			      showMessage("You don't have a valid movement! It's "+opponentName+" turn!");
 			  }
                           
                         } else if (curPlayer == 2) {
-                             if(verifyHasMovements())
+                             if(verifyHasMovements()){
                                 if (verifyMovement(i, j)) {
                                     curPlayer--;
                                     showMessage("<html>It's your turn!<html/>");
                                 }
+                             }
                             else{
                                 curPlayer--;
                                 showMessage("<html>It's your turn!<html/>");
