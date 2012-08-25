@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import sun.org.mozilla.javascript.internal.ast.ForInLoop;
 
 /**
  * 
@@ -523,8 +524,20 @@ public class Board extends JPanel implements Runnable {
         }
 
         @SuppressWarnings("RedundantStringConstructorCall")
-        String msg = new String("The winner of this match was" + winner);
+        String msg = new String("The winner of this match was " + winner);
         showMessage(msg);
+        playAgain();
+    }
+    
+    private void playAgain(){
+        
+        boolean playAgain = false;
+        //botão de sim ou não.
+        
+        if(playAgain){
+            initCells();
+            placeInitCells();
+        }
     }
 
     @SuppressWarnings("CallToThreadDumpStack")
