@@ -3,6 +3,9 @@ package Client;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
@@ -15,14 +18,17 @@ import java.net.Socket;
 import java.nio.BufferOverflowException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 /**
- * 
+ *
  * @author Pedro Tanaka
  * @author Carolina Massae Kita
  * @version 0.2a
@@ -38,6 +44,7 @@ public class Board extends JPanel implements Runnable {
     private String playerName;
     private String opponentName;
     private JLabel score;
+    private JButton playAgainButton;
 //Network Atributes
     private PrintStream output;
     private BufferedReader input;
@@ -50,7 +57,7 @@ public class Board extends JPanel implements Runnable {
         this.serverIp = serverIp;
         this.serverPort = serverPort;
         this.playerName = playerName;
-        
+
         player1pieces = player2pieces = 0;
         drawBoard();
         MouseEvt mouseEvent = new MouseEvt();
@@ -69,6 +76,19 @@ public class Board extends JPanel implements Runnable {
         score.setForeground(Color.WHITE);
         score.setBorder(BorderFactory.createBevelBorder(0));
         add(score);
+
+
+        ActListener csActionListener = new ActListener();
+        playAgainButton = new JButton(new ImageIcon("rsc/logo.png"));
+        playAgainButton.setText("Play Again!");
+        playAgainButton.setVerticalTextPosition(AbstractButton.CENTER);
+        playAgainButton.setHorizontalTextPosition(AbstractButton.CENTER);
+        playAgainButton.addActionListener(csActionListener);
+        playAgainButton.setMnemonic(KeyEvent.VK_P);
+        playAgainButton.setActionCommand("playAgain");
+        playAgainButton.setBounds(0, 200, 100, 100);
+        playAgainButton.setVisible(false);
+        playAgainButton.setEnabled(false);
 
     }
 
@@ -104,7 +124,7 @@ public class Board extends JPanel implements Runnable {
         int initY = 50;     //Distância da Margem em Y
         Polygon p;          //Ponteiro de um poligono
 
-        
+
         for (int i = 0; i < NUMCELLS; i++) {
             for (int j = 0; j < NUMCELLS; j++) {
                 int xpoints[] = {i * width + initX, ((i * width) + (width / 2)) + initX, (i + 1) * width + initX, ((i * width) + (width / 2)) + initX};
@@ -151,8 +171,6 @@ public class Board extends JPanel implements Runnable {
         }
     }
 
-   
-
     /**
      * @param x position X from the mouse event
      * @param y position Y from the mouse event
@@ -163,31 +181,29 @@ public class Board extends JPanel implements Runnable {
                 if (cells[i][j].Contains(x, y) == true) {
                     if (cells[i][j].getPlayer() == 0) {
                         showMessage("                              ");
-                        
+
                         if (curPlayer == 1) {
-			  if(verifyHasMovements()){
-                            if (verifyMovement(i, j)) {
+                            if (verifyHasMovements()) {
+                                if (verifyMovement(i, j)) {
+                                    curPlayer++;
+                                    showMessage("It's the " + opponentName + " turn!");
+                                }
+                            } else {
                                 curPlayer++;
-                                showMessage("It's the "+opponentName+" turn!");
+                                showMessage("You don't have a valid movement! It's " + opponentName + " turn!");
                             }
-                          }
-                          else {
-			      curPlayer++;
-			      showMessage("You don't have a valid movement! It's "+opponentName+" turn!");
-			  }
-                          
+
                         } else if (curPlayer == 2) {
-                             if(verifyHasMovements()){
+                            if (verifyHasMovements()) {
                                 if (verifyMovement(i, j)) {
                                     curPlayer--;
                                     showMessage("<html>It's your turn!<html/>");
                                 }
-                             }
-                            else{
+                            } else {
                                 curPlayer--;
                                 showMessage("<html>It's your turn!<html/>");
                             }
-			  
+
                         }
                     } else {
                         showMessage("  Jogada Não Permitida  ");
@@ -203,7 +219,6 @@ public class Board extends JPanel implements Runnable {
     private void showScore() {
         SwingUtilities.invokeLater(
                 new Runnable() {
-
                     @Override
                     public void run() {
                         String gameScore;
@@ -215,24 +230,25 @@ public class Board extends JPanel implements Runnable {
 
 
     }
-     /**
-     * Check if the current player can move or not from a special  localization
+
+    /**
+     * Check if the current player can move or not from a special localization
      * in the matrix of cells. The origin position is [posX][posY].
-     * 
+     *
      * @param posX the position X in the board
      * @param posY the position Y in the board
      * @param dX the horizontal direction that is suposed to check
      * @param dY the vertical direction that is suposed to check
      *
      * @return false if the curPlayer can move now, true otherwise.
-     * 
+     *
      */
-    private boolean verifyHasMovements(){
+    private boolean verifyHasMovements() {
         boolean valueReturn = false;
         int num = 2;
-        for (int posX = 0; posX < NUMCELLS; posX++) { 
-            for(int posY = 0; posY < NUMCELLS; posY++){
-                if(cells[posX][posY].getPlayer() == 0){
+        for (int posX = 0; posX < NUMCELLS; posX++) {
+            for (int posY = 0; posY < NUMCELLS; posY++) {
+                if (cells[posX][posY].getPlayer() == 0) {
                     valueReturn = paintCapturedCellsPlus0Plus1(posX, posY, num) || valueReturn;
                     valueReturn = paintCapturedCellsMinus1Plus1(posX, posY, num) || valueReturn;
                     valueReturn = paintCapturedCellsMinus1Plus0(posX, posY, num) || valueReturn;
@@ -244,13 +260,13 @@ public class Board extends JPanel implements Runnable {
                 }
             }
         }
-         return valueReturn;
+        return valueReturn;
     }
 
     private boolean verifyMovement(int posX, int posY) {
         boolean valueReturn = false;
         int num = 1; //Fala que a função é verifyMovement
-        
+
         valueReturn = paintCapturedCellsPlus0Plus1(posX, posY, num) || valueReturn;
         valueReturn = paintCapturedCellsMinus1Plus1(posX, posY, num) || valueReturn;
         valueReturn = paintCapturedCellsMinus1Plus0(posX, posY, num) || valueReturn;
@@ -259,7 +275,7 @@ public class Board extends JPanel implements Runnable {
         valueReturn = paintCapturedCellsPlus1Minus1(posX, posY, num) || valueReturn;
         valueReturn = paintCapturedCellsPlus1Plus0(posX, posY, num) || valueReturn;
         valueReturn = paintCapturedCellsPlus1Plus1(posX, posY, num) || valueReturn;
-        if(curPlayer == 2 && !valueReturn) {
+        if (curPlayer == 2 && !valueReturn) {
             System.out.println("Client Movement Invalid");
         } // Debug
         if (valueReturn == false) {
@@ -277,7 +293,7 @@ public class Board extends JPanel implements Runnable {
                 posY += dY;
                 if (curPlayer == cells[positionX][posY].getPlayer()) {
                     valueReturn = true;
-                    if(num == 1) {
+                    if (num == 1) {
                         for (int j = positionY; j < posY; j = j + dY) {
                             cells[positionX][j].setPlayer(curPlayer);
                         }
@@ -300,7 +316,7 @@ public class Board extends JPanel implements Runnable {
                 posY += dY;
                 if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
-                    if(num == 1) {
+                    if (num == 1) {
                         for (int i = 0; i <= mod(positionX, posX); i++) {
                             cells[positionX + dX * i][positionY + dY * i].setPlayer(curPlayer);
                         }
@@ -320,7 +336,7 @@ public class Board extends JPanel implements Runnable {
                 posX += dX;
                 if (curPlayer == cells[posX][positionY].getPlayer()) {
                     valueReturn = true;
-                    if(num == 1) {
+                    if (num == 1) {
                         for (int i = positionX; i > posX; i = i + dX) {
                             cells[i][positionY].setPlayer(curPlayer);
                         }
@@ -343,7 +359,7 @@ public class Board extends JPanel implements Runnable {
                 posY += dY;
                 if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
-                    if(num == 1) {
+                    if (num == 1) {
                         for (int i = 0; i <= mod(positionX, posX); i++) {
                             cells[positionX + dX * i][positionY + dY * i].setPlayer(curPlayer);
                         }
@@ -363,7 +379,7 @@ public class Board extends JPanel implements Runnable {
                 posY += dY;
                 if (curPlayer == cells[positionX][posY].getPlayer()) {
                     valueReturn = true;
-                    if(num == 1) {
+                    if (num == 1) {
                         for (int j = positionY; j > posY; j = j + dY) {
                             cells[positionX][j].setPlayer(curPlayer);
                         }
@@ -386,7 +402,7 @@ public class Board extends JPanel implements Runnable {
                 posY += dY;
                 if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
-                    if(num == 1) {
+                    if (num == 1) {
                         for (int i = 0; i <= mod(positionX, posX); i++) {
                             cells[positionX + dX * i][positionY + dY * i].setPlayer(curPlayer);
                         }
@@ -406,7 +422,7 @@ public class Board extends JPanel implements Runnable {
                 posX += dX;
                 if (curPlayer == cells[posX][positionY].getPlayer()) {
                     valueReturn = true;
-                    if(num == 1) {
+                    if (num == 1) {
                         for (int i = positionX; i < posX; i = i + dX) {
                             cells[i][positionY].setPlayer(curPlayer);
                         }
@@ -429,7 +445,7 @@ public class Board extends JPanel implements Runnable {
                 posY += dY;
                 if (curPlayer == cells[posX][posY].getPlayer()) {
                     valueReturn = true;
-                    if(num == 1) {
+                    if (num == 1) {
                         for (int i = 0; i <= mod(positionX, posX); i++) {
                             cells[positionX + dX * i][positionY + dY * i].setPlayer(curPlayer);
                         }
@@ -485,7 +501,7 @@ public class Board extends JPanel implements Runnable {
             try {
                 String receivedData;
                 receivedData = (String) input.readLine();
-                System.out.println("Inside refresh:Client"+receivedData);//Debug
+                System.out.println("Inside refresh:Client" + receivedData);//Debug
                 String[] data = receivedData.split(":");
 
                 this.opponentName = data[0];
@@ -493,7 +509,7 @@ public class Board extends JPanel implements Runnable {
                 int y = Integer.parseInt(data[2]);
                 showMessage(receivedData);
                 if (curPlayer == 2) {
-                    System.out.println("Before Server Play"+x+" "+y+" "+ curPlayer +"\n");
+                    System.out.println("Before Server Play" + x + " " + y + " " + curPlayer + "\n");
                     cellMovement(x, y);
                     repaint();
                 }
@@ -507,7 +523,6 @@ public class Board extends JPanel implements Runnable {
     private void showMessage(final String messageToDisplay) {
         SwingUtilities.invokeLater(
                 new Runnable() {
-
                     @Override
                     public void run()//atualiza a displayArea
                     {
@@ -528,23 +543,20 @@ public class Board extends JPanel implements Runnable {
         @SuppressWarnings("RedundantStringConstructorCall")
         String msg = new String("The winner of this match was " + winner);
         showMessage(msg);
-        playAgain();
+        
+        playAgainButton.setVisible(true);
+        playAgainButton.setEnabled(true);
+        playAgainButton.setBounds(null);
     }
-    
-    private void playAgain(){
-        
-        boolean playAgain = false;
-        //botão de sim ou não.
-        
-        if (playAgain) {
-            for (int i = 0; i < NUMCELLS; i++) {
-                for (int j = 0; j < NUMCELLS; j++) {
-                    this.cells[i][j].setPlayer(0);
-                    this.cells[i][j].setDraw(Boolean.TRUE);
-                }
+
+    private void playAgain() {
+        for (int i = 0; i < NUMCELLS; i++) {
+            for (int j = 0; j < NUMCELLS; j++) {
+                this.cells[i][j].setPlayer(0);
+                this.cells[i][j].setDraw(Boolean.TRUE);
             }
-            placeInitCells();
         }
+        placeInitCells();
         repaint();
     }
 
@@ -577,16 +589,25 @@ public class Board extends JPanel implements Runnable {
         }
     }
 
+    public class ActListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            if(ae.getActionCommand().equals("playAgain")){
+                playAgain();
+            }
+        }
+    }
+
     private void sendData(String message) throws IOException {
         try {
             output = new PrintStream(client.getOutputStream());
             output.println(message);
             output.flush();
-            System.out.println("Sending data from client...\n"+message+"\n"); //DEBUG
+            System.out.println("Sending data from client...\n" + message + "\n"); //DEBUG
         } catch (BufferOverflowException e) {
             JOptionPane.showMessageDialog(null, "An exception was found while sending data");
 
         }
     }
-
 }
