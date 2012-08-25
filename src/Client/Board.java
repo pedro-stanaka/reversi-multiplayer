@@ -20,7 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import sun.org.mozilla.javascript.internal.ast.ForInLoop;
 
 /**
  * 
@@ -205,6 +204,7 @@ public class Board extends JPanel implements Runnable {
         SwingUtilities.invokeLater(
                 new Runnable() {
 
+                    @Override
                     public void run() {
                         String gameScore;
                         gameScore = "<html>O jogador 1 tem: " + player1pieces + "peças<br/>";
@@ -448,6 +448,7 @@ public class Board extends JPanel implements Runnable {
         }
     }
 
+    @Override
     public void run() {
         runClient();
     }
@@ -507,6 +508,7 @@ public class Board extends JPanel implements Runnable {
         SwingUtilities.invokeLater(
                 new Runnable() {
 
+                    @Override
                     public void run()//atualiza a displayArea
                     {
                         connectionStatus.setText(messageToDisplay);
@@ -534,10 +536,16 @@ public class Board extends JPanel implements Runnable {
         boolean playAgain = false;
         //botão de sim ou não.
         
-        if(playAgain){
-            initCells();
+        if (playAgain) {
+            for (int i = 0; i < NUMCELLS; i++) {
+                for (int j = 0; j < NUMCELLS; j++) {
+                    this.cells[i][j].setPlayer(0);
+                    this.cells[i][j].setDraw(Boolean.TRUE);
+                }
+            }
             placeInitCells();
         }
+        repaint();
     }
 
     @SuppressWarnings("CallToThreadDumpStack")
