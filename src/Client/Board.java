@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
@@ -18,10 +17,7 @@ import java.net.Socket;
 import java.nio.BufferOverflowException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -44,7 +40,6 @@ public class Board extends JPanel implements Runnable {
     private String playerName;
     private String opponentName;
     private JLabel score;
-    private JButton playAgainButton;
 //Network Atributes
     private PrintStream output;
     private BufferedReader input;
@@ -77,18 +72,6 @@ public class Board extends JPanel implements Runnable {
         score.setBorder(BorderFactory.createBevelBorder(0));
         add(score);
 
-
-        ActListener csActionListener = new ActListener();
-        playAgainButton = new JButton(new ImageIcon("rsc/logo.png"));
-        playAgainButton.setText("Play Again!");
-        playAgainButton.setVerticalTextPosition(AbstractButton.CENTER);
-        playAgainButton.setHorizontalTextPosition(AbstractButton.CENTER);
-        playAgainButton.addActionListener(csActionListener);
-        playAgainButton.setMnemonic(KeyEvent.VK_P);
-        playAgainButton.setActionCommand("playAgain");
-        playAgainButton.setBounds(0, 200, 100, 100);
-        playAgainButton.setVisible(false);
-        playAgainButton.setEnabled(false);
 
     }
 
@@ -503,15 +486,18 @@ public class Board extends JPanel implements Runnable {
                 receivedData = (String) input.readLine();
                 System.out.println("Inside refresh:Client" + receivedData);//Debug
                 String[] data = receivedData.split(":");
-
-                this.opponentName = data[0];
-                int x = Integer.parseInt(data[1]);
-                int y = Integer.parseInt(data[2]);
-                showMessage(receivedData);
-                if (curPlayer == 2) {
-                    System.out.println("Before Server Play" + x + " " + y + " " + curPlayer + "\n");
-                    cellMovement(x, y);
-                    repaint();
+                if (!data[0].equals("playAgain")) {
+                    this.opponentName = data[0];
+                    int x = Integer.parseInt(data[1]);
+                    int y = Integer.parseInt(data[2]);
+                    showMessage(receivedData);
+                    if (curPlayer == 2) {
+                        System.out.println("Before Server Play" + x + " " + y + " " + curPlayer + "\n");
+                        cellMovement(x, y);
+                        repaint();
+                    }
+                } else {
+                    playAgain();
                 }
             } catch (IOException ioE) {
                 goingWell = false;
@@ -543,17 +529,15 @@ public class Board extends JPanel implements Runnable {
         @SuppressWarnings("RedundantStringConstructorCall")
         String msg = new String("The winner of this match was " + winner);
         showMessage(msg);
-        
-        playAgainButton.setVisible(true);
-        playAgainButton.setEnabled(true);
-        playAgainButton.setBounds(null);
+        repaint();
+
     }
 
     private void playAgain() {
+
         for (int i = 0; i < NUMCELLS; i++) {
             for (int j = 0; j < NUMCELLS; j++) {
                 this.cells[i][j].setPlayer(0);
-                this.cells[i][j].setDraw(Boolean.TRUE);
             }
         }
         placeInitCells();
@@ -593,7 +577,7 @@ public class Board extends JPanel implements Runnable {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            if(ae.getActionCommand().equals("playAgain")){
+            if (ae.getActionCommand().equals("playAgain")) {
                 playAgain();
             }
         }
@@ -607,7 +591,6 @@ public class Board extends JPanel implements Runnable {
             System.out.println("Sending data from client...\n" + message + "\n"); //DEBUG
         } catch (BufferOverflowException e) {
             JOptionPane.showMessageDialog(null, "An exception was found while sending data");
-
         }
     }
 }

@@ -101,8 +101,11 @@ public class Cell {
     private void Color() {
         if (this.player == 1) {
             this.color = Color.WHITE;
-        } else {
+        } else if(this.player==2) {
             this.color = Color.BLACK;
+        }
+        else {
+            this.color = Color.GRAY;
         }
     }
 
