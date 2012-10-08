@@ -56,7 +56,7 @@ public class Main {
         jpanel = new JPanel();
 
         serverIp = JOptionPane.showInputDialog(null, "Please type the server ip:");
-        serverPort = Integer.parseInt(JOptionPane.showInputDialog(null, "Please type the server port:"));
+        serverPort = 12345;
         playerName = JOptionPane.showInputDialog(null, "Please type the player name:");
 
         board = new Board( serverIp, serverPort, playerName );

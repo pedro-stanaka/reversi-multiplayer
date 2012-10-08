@@ -169,7 +169,7 @@ public class Board extends JPanel implements Runnable {
                             if (verifyHasMovements()) {
                                 if (verifyMovement(i, j)) {
                                     curPlayer++;
-                                    showMessage("It's the " + opponentName + " turn!");
+                                    showMessage("It's " + opponentName + " turn!");
                                 }
                             } else {
                                 curPlayer++;
@@ -205,13 +205,11 @@ public class Board extends JPanel implements Runnable {
                     @Override
                     public void run() {
                         String gameScore;
-                        gameScore = "<html>O jogador 1 tem: " + player1pieces + "peças<br/>";
-                        gameScore += "O jogador 2 tem: " + player2pieces + "peças</html>";
+                        gameScore = "<html>The player 1 has: " + player1pieces + " pieces<br/>";
+                        gameScore += "The player 2 has: " + player2pieces + " pieces</html>";
                         score.setText(gameScore);
                     }
                 });
-
-
     }
 
     /**
@@ -540,6 +538,8 @@ public class Board extends JPanel implements Runnable {
                 this.cells[i][j].setPlayer(0);
             }
         }
+        player1pieces = player2pieces = 0;
+        showScore();
         placeInitCells();
         repaint();
     }
