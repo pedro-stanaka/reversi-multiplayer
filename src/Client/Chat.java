@@ -83,7 +83,7 @@ public class Chat extends JPanel implements Runnable {
             output.flush();
             showMessage("\n" + this.playerName + ": " + message);
         } catch (BufferOverflowException e) {
-            displayArea.append("\nErro ao enviar dados");
+            displayArea.append("\nAn exception has occured while sending data");
         }
     }
 
@@ -94,7 +94,7 @@ public class Chat extends JPanel implements Runnable {
             getIOData();
             processData();
         } catch (EOFException eofe) {
-            showMessage("Falha ao conectar...");
+            showMessage("An exception has occured while trying to connect!");
         } catch (IOException ioe) {
             ioe.printStackTrace();
         } finally {
@@ -104,9 +104,8 @@ public class Chat extends JPanel implements Runnable {
 
     @SuppressWarnings("CallToThreadDumpStack")
     private void closeConnection() {
-        showMessage("\nFechando a conexão");
+        showMessage("\nClosing connection");
         setTextFieldEditable(false);
-
         try {
             output.close();
             input.close();
@@ -117,11 +116,11 @@ public class Chat extends JPanel implements Runnable {
     }
 
     private void connectServer() throws IOException {
-        showMessage("Tentando conectar...\n");
+        showMessage("Trying to connect...\n");
 
         server = new Socket(InetAddress.getByName(serverIp), this.serverPort);
 
-        showMessage("Conexão estabelecida com: " + server.getInetAddress().getHostName());
+        showMessage("Connection stabilished with: " + server.getInetAddress().getHostName() +"\n");
     }
 
     private void showMessage(final String messageToDisplay) {
@@ -149,7 +148,7 @@ public class Chat extends JPanel implements Runnable {
                 showMessage("\n" + message);
             } catch (IOException e) {
                 tudoOk = false;
-                showMessage("\nO tipo de mensagem recebida é desconhecido");
+                showMessage("\nThe received data is in a wrong format!");
             }
 
         } while (tudoOk);
