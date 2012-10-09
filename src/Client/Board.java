@@ -7,21 +7,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.BufferOverflowException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 /**
  *
@@ -205,8 +197,8 @@ public class Board extends JPanel implements Runnable {
                     @Override
                     public void run() {
                         String gameScore;
-                        gameScore = "<html>The player 1 has: " + player1pieces + " pieces<br/>";
-                        gameScore += "The player 2 has: " + player2pieces + " pieces</html>";
+                        gameScore = "<html>You have: " + player1pieces + " pieces<br/>";
+                        gameScore += opponentName +" has: " + player2pieces + " pieces</html>";
                         score.setText(gameScore);
                     }
                 });
