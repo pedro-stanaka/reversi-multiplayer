@@ -181,7 +181,7 @@ public class Board extends JPanel implements Runnable {
 
                         }
                     } else {
-                        showMessage("  Jogada Não Permitida  ");
+                        showMessage("  ----- Forbidden movement. ------  ");
                     }
                 }
             }
@@ -252,7 +252,7 @@ public class Board extends JPanel implements Runnable {
             System.out.println("Client Movement Invalid");
         } // Debug
         if (valueReturn == false) {
-            showMessage("##### JOGADA INVALIDA ####");
+            showMessage("##### INVALID MOVEMENT ####");
         }
         return valueReturn;
     }
