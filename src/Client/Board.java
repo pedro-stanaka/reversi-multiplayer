@@ -40,6 +40,12 @@ public class Board extends JPanel implements Runnable {
     private int serverPort;
     private JLabel connectionStatus;
 
+    /**
+     *
+     * @param serverIp IP adress of the server
+     * @param serverPort Port number of the server
+     * @param playerName Name of the player playing as server.
+     */
     public Board(String serverIp, int serverPort, String playerName) {
         this.serverIp = serverIp;
         this.serverPort = serverPort;
